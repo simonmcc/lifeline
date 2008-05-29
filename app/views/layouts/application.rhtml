@@ -12,7 +12,9 @@
 </head>
 <body>
 <div>
-<%= link_to 'Email Accounts', :controller => 'account', :action => 'index'%> |
+<%= link_to 'Presenting Issues', :controller => 'presenting_issue', :action => 'index'%> |
+<%= link_to 'New Call', :controller => 'call', :action => 'new'%> |
+<%= link_to 'Calls', :controller => 'call', :action => 'index'%> |
 </div>
 
 <% if flash[:notice] -%>
