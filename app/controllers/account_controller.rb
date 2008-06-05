@@ -1,4 +1,5 @@
 class AccountController < ApplicationController
+
   # Be sure to include AuthenticationSystem in Application Controller instead
   include AuthenticatedSystem
   # If you want "remember me" functionality, add this before_filter to Application Controller
@@ -40,4 +41,5 @@ class AccountController < ApplicationController
     flash[:notice] = "You have been logged out."
     redirect_back_or_default(:controller => '/account', :action => 'index')
   end
+  
 end
