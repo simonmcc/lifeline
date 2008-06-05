@@ -7,9 +7,10 @@ class CallController < ApplicationController
 
   active_scaffold :call do |config|
 
-    config.columns = [:usedlifelinebefore, :understoodconfidentiality, :emergency, :contact_telephone,
+    config.columns = [:usedlifelinebefore, :direct_call, :caller_name, :understoodconfidentiality, 
+			:emergency, :contact_telephone,
 			:oktoidentify, :throughfirstcall, :referal_source, :gender, :age,
-			:presenting_issues]
+			:presenting_issues, :type_of_call]
 
 
     # disable the create/edit fucntionality for the presenting issues
@@ -32,6 +33,8 @@ class CallController < ApplicationController
     config.columns[:usedlifelinebefore].label = "Has the caller used LIFELINE before?"
 
     config.columns[:emergency].form_ui = :checkbox
+
+    config.columns[:type_of_call].form_ui = :select
 
     # This should be set instead of configurable on create
     config.create.columns.exclude :user

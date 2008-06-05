@@ -4,4 +4,5 @@ class Call < ActiveRecord::Base
   belongs_to  :gender
 #  has_one  :location_trust
   has_and_belongs_to_many :presenting_issues
+  belongs_to :type_of_call
 end

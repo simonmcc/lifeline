@@ -1,5 +1,5 @@
 <ol class="form" <%= 'style="display: none;"' if columns.collapsed -%>>
-  Your are logged in as: <%= current_user.login -%>
+  <li class="form-element ">Your are logged in as: <%= current_user.login -%>
   <% columns.each :for => @record do |column| -%>
   <% if is_subsection? column -%>
   <li class="sub-section">
