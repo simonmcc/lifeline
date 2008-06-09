@@ -110,6 +110,15 @@ class CallController < ApplicationController
 end
 
 module CallHelper
+
+  def usedlifelinebefore_form_column(record, input_name)
+    select_id = @record.usedlifelinebefore
+
+    select("record", "usedlifelinebefore",
+                [['Yes (Known Caller)', true ], ['No (New Caller)', false]],
+		{ :selected => select_id, :prompt => true })
+  end
+
   
   def furtheractionrequired_form_column(record, input_name)
     select :record, :furtheractionrequired, 
@@ -134,13 +143,6 @@ module CallHelper
   def throughfirstcall_form_column(record, input_name)
     select("record", "throughfirstcall", [ ['Yes', true ], ['No - (Call waiting/engaged)', false]],
                                 { :selected => @record.throughfirstcall, :prompt => true  })
-  end
-
-  def usedlifelinebefore_form_column(record, input_name)
-
-    select("record", "usedlifelinebefore",
-                [['Yes (Known Caller)', true ], ['No (New Caller)', false]],
-		{ :selected => @record.usedlifelinebefore, :prompt => true })
   end
 
   def user_form_column(record, input_name)
