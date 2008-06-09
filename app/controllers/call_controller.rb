@@ -113,37 +113,34 @@ module CallHelper
   
   def furtheractionrequired_form_column(record, input_name)
     select :record, :furtheractionrequired, 
-		[['Yes - no further action required', 'false'],
-	         ['No - action required recorded', 'true']],
+		[['Yes - no further action required', false],
+	         ['No - action required recorded', true]],
 		{ :prompt => true, :selected => @record.furtheractionrequired }
   end
 
 
   def emergency_form_column(record, input_name)
-    select("record", "emergency", [['-select-',''],
-                                   ['Yes - move to immediatly risk assess the situation','true'],
-                                   ['No - continue', 'false']],
-                                { :selected => @record.emergency })
+    select("record", "emergency", [['Yes - move to immediatly risk assess the situation', true ],
+                                   ['No - continue',  false ]],
+                                { :selected => @record.emergency, :prompt => true  })
   end
 
   def oktoidentify_form_column(record, input_name)
-    select("record", "oktoidentify", [['-select-',''], 
-                                   ['Yes','true'],
-                                   ['No - do not identify the service when ringing', 'false']],
-                                { :selected => @record.oktoidentify })
+    select("record", "oktoidentify", [['Yes', true ],
+                                   ['No - do not identify the service when ringing', false]],
+                                { :selected => @record.oktoidentify, :prompt => true  })
   end
 
   def throughfirstcall_form_column(record, input_name)
-    select("record", "throughfirstcall", [['-select-',''],
-                                   ['Yes','true'],
-                                   ['No - (Call waiting/engaged)', 'false']],
-                                { :selected => @record.throughfirstcall })
+    select("record", "throughfirstcall", [ ['Yes', true ], ['No - (Call waiting/engaged)', false]],
+                                { :selected => @record.throughfirstcall, :prompt => true  })
   end
 
   def usedlifelinebefore_form_column(record, input_name)
-    select "record", "usedlifelinebefore",
-                [['Yes (Known Caller)','true'], ['No (New Caller)', 'false']],
-		{ :selected => @record.usedlifelinebefore, :prompt => true }
+
+    select("record", "usedlifelinebefore",
+                [['Yes (Known Caller)', true ], ['No (New Caller)', false]],
+		{ :selected => @record.usedlifelinebefore, :prompt => true })
   end
 
   def user_form_column(record, input_name)
