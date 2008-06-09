@@ -11,11 +11,12 @@
 
 </head>
 <body>
-<h1>Contacy Youth LIFELINE</h1>
+<h1>Contact Youth LIFELINE</h1>
 <div>
 <%= link_to 'New Call', :controller => 'call', :action => 'new'%> |
 <%= link_to 'Calls', :controller => 'call', :action => 'index'%> |
 <%= link_to 'Edit Presenting Issues', :controller => 'presenting_issue', :action => 'index'%> |
+<%= link_to 'Logout', :controller => 'account', :action => 'logout' %> |
 <%= link_to 'Create New Logon', :controller => 'account', :action => 'signup' %> 
 </div>
 

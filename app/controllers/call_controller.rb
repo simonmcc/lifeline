@@ -7,7 +7,9 @@ class CallController < ApplicationController
 
   active_scaffold :call do |config|
 
-    config.columns = [:usedlifelinebefore, :direct_call, :caller_name, :understoodconfidentiality, 
+    config.columns = [:user, :usedlifelinebefore, :direct_call, :caller_name, 
+			:client,
+			:understoodconfidentiality, 
 			:emergency, :contact_telephone,
 			:oktoidentify, :throughfirstcall, :referal_source, :gender, :age,
 			:presenting_issues, :type_of_call]
@@ -15,7 +17,15 @@ class CallController < ApplicationController
 
     # disable the create/edit fucntionality for the presenting issues
     config.columns[:presenting_issues].form_ui = :select
+
     config.columns[:user].form_ui = :select
+    config.columns[:user].label = "Agent"
+
+    # This isn't right, it should really be a textbox with AJAX
+    # typedown lookups, but I have no docs :-)
+    config.columns[:client].form_ui = :textarea
+    config.columns[:client].label = "Client ID"
+
     config.columns[:referal_source].form_ui = :select
 
     config.columns[:gender].form_ui = :select

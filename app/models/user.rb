@@ -51,6 +51,11 @@ class User < ActiveRecord::Base
     save(false)
   end
 
+  # Method for ActiveScaffold, display the name of the agent who took the call
+  def to_label
+    "#{login}"
+  end
+
   protected
     # before filter 
     def encrypt_password
