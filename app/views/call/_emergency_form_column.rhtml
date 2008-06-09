@@ -1,0 +1,12 @@
+<!-- These should reallty just be module helper overrides, as we don't care about the label. -->
+<dl>
+  <dt>
+    <label><%= column.label %></label>
+  </dt>
+  <dd>
+<%= select("record", "emergency", [['-select-',''], 
+				   ['Yes - move to immediatly risk assess the situation','true'], 
+				   ['No - continue', 'false']],
+				{ :selected => @record.emergency })%>
+  </dd>
+</dl>

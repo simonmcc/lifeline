@@ -1,2 +1,8 @@
-<label>Agent</label>
-<%= select("call", "user_id", User.find(:all).collect {|u| [u.login, u.id]})%>
+<dl>
+  <dt>
+    <label>Agent</label>
+  </dt>
+  <dd>
+    <%= select("call", "user_id", User.find(:all).collect {|u| [u.login, u.id]})%>
+  </dd>
+</dl>

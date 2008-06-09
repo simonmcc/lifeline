@@ -1,0 +1,9 @@
+<dl>
+  <dt>
+    <label><%= column.label %></label>
+  </dt>
+  <dd>
+    <%= select("record", "usedlifelinebefore", 
+		[['-select-',''], ['Yes (Known Caller)','true'], ['No (New Caller)', 'false']])%>
+  </dd>
+</dl>

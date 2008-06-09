@@ -7,12 +7,42 @@ class CallController < ApplicationController
 
   active_scaffold :call do |config|
 
-#    config.columns = [:user, :usedlifelinebefore, :direct_call, :caller_name, 
-#			:client,
-#			:understoodconfidentiality, 
-#			:emergency, :contact_telephone,
-#			:oktoidentify, :throughfirstcall, :referal_source, :gender, :age,
-##			:presenting_issues, :type_of_call]
+    config.columns = [:user, 
+			:created_at,
+			:usedlifelinebefore, 
+			:direct_call, 
+			:caller_name, 
+			:client,
+			:understoodconfidentiality, 
+			:emergency, 
+			:contact_telephone,
+			:oktoidentify, 
+			:throughfirstcall, 
+			:referal_source, 
+			:gender, 
+			:age,
+			:location_trust,
+			:presenting_issues, 
+			:awareofservices_id,
+			:type_of_call,
+			:furtheractionrequired,
+			:caller_satisfaction_id,
+			:length_of_call_id
+			]
+
+    config.list.columns = [:user, 
+			:created_at,
+			:direct_call, 
+			:caller_name, 
+			:client,
+			:emergency, 
+			:referal_source, 
+			:gender, 
+			:age,
+			:type_of_call,
+			:furtheractionrequired,
+			:length_of_call_id
+			]
 
 
     config.columns[:user].form_ui = :select
@@ -23,25 +53,23 @@ class CallController < ApplicationController
     config.columns[:client].form_ui = :textarea
     config.columns[:client].label = "Client ID"
 
-    config.columns[:usedlifelinebefore].form_ui = :checkbox
     config.columns[:usedlifelinebefore].label = "Has the caller used LIFELINE before?"
 
+    # Need to overide the form on this...
     config.columns[:direct_call].label = "Is the caller ringing a direct call or are concerned about someone else?"
 
     config.columns[:understoodconfidentiality].label = "Has anyone from our service explained confidentiality to the caller before?"
     config.columns[:understoodconfidentiality].form_ui = :checkbox
 
     config.columns[:emergency].label = "Is the caller ringing in an emergency?"
-    config.columns[:emergency].form_ui = :checkbox
 
     config.columns[:contact_telephone].label = 'In case the call gest interrupted, is the caller willing to give a contact telephone number?'
 
+    # Need to overide the form on this...
     config.columns[:oktoidentify].label = 'Is it OK to identify the service if LIFELINE rings this number?'
-    config.columns[:oktoidentify].form_ui = :checkbox
 
+    # Need to overide the form on this...
     config.columns[:throughfirstcall].label = "Did the caller get straight through to LIFELINE first time?"
-    config.columns[:throughfirstcall].form_ui = :checkbox
-
 
     config.columns[:referal_source].label = 'How did the caller find out about the LIFELINE services?'
     config.columns[:referal_source].form_ui = :select
@@ -52,6 +80,7 @@ class CallController < ApplicationController
     config.columns[:age].label = 'What age is the caller (or person the caller is concerned about)?'
 
     config.columns[:location_trust].label = 'Where in the country is the caller (or person the caller is concerned about) ringing from (i.e. nearest town)?'
+    config.columns[:location_trust].form_ui = :select
 
     config.columns[:presenting_issues].label = 'What issues is the caller (or person the caller is concerned about) presenting with?'
     # disable the create/edit fucntionality for the presenting issues
@@ -78,5 +107,14 @@ class CallController < ApplicationController
     record.user_id = logged_in_user.id
   end
 
+end
+
+module CallHelper
   
+  def furtheractionrequired_form_column(record, input_name)
+    select :record, :furtheractionrequired, [['-select-',''],
+				             ['Yes - no further action required', 'false'],
+					     ['No - action required recorded', 'true']]
+  end
+
 end

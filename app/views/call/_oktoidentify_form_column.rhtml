@@ -1,0 +1,11 @@
+<!-- These should reallty just be module helper overrides, as we don't care about the label. -->
+<dl>
+  <dt>
+    <label><%= column.label %></label>
+  </dt>
+  <dd>
+<%= select("record", "oktoidentify", [['-select-',''], 
+				   ['Yes','true'], 
+				   ['No - do not identify the service when ringing', 'false']])%>
+  </dd>
+</dl>
