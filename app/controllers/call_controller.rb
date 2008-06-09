@@ -112,9 +112,42 @@ end
 module CallHelper
   
   def furtheractionrequired_form_column(record, input_name)
-    select :record, :furtheractionrequired, [['-select-',''],
-				             ['Yes - no further action required', 'false'],
-					     ['No - action required recorded', 'true']]
+    select :record, :furtheractionrequired, 
+		[['Yes - no further action required', 'false'],
+	         ['No - action required recorded', 'true']],
+		{ :prompt => true, :selected => @record.furtheractionrequired }
+  end
+
+
+  def emergency_form_column(record, input_name)
+    select("record", "emergency", [['-select-',''],
+                                   ['Yes - move to immediatly risk assess the situation','true'],
+                                   ['No - continue', 'false']],
+                                { :selected => @record.emergency })
+  end
+
+  def oktoidentify_form_column(record, input_name)
+    select("record", "oktoidentify", [['-select-',''], 
+                                   ['Yes','true'],
+                                   ['No - do not identify the service when ringing', 'false']],
+                                { :selected => @record.oktoidentify })
+  end
+
+  def throughfirstcall_form_column(record, input_name)
+    select("record", "throughfirstcall", [['-select-',''],
+                                   ['Yes','true'],
+                                   ['No - (Call waiting/engaged)', 'false']],
+                                { :selected => @record.throughfirstcall })
+  end
+
+  def usedlifelinebefore_form_column(record, input_name)
+    select "record", "usedlifelinebefore",
+                [['Yes (Known Caller)','true'], ['No (New Caller)', 'false']],
+		{ :selected => @record.usedlifelinebefore, :prompt => true }
+  end
+
+  def user_form_column(record, input_name)
+    select("call", "user_id", User.find(:all).collect {|u| [u.login, u.id]})
   end
 
 end
