@@ -5,6 +5,8 @@ class CallController < ApplicationController
   include AuthenticatedSystem
   before_filter :login_required
 
+  auto_complete_for :client, :name
+
   active_scaffold :call do |config|
 
     config.columns = [:user, 
@@ -119,6 +121,9 @@ module CallHelper
 		{ :selected => select_id, :prompt => true })
   end
 
+  def client_form_column(record, input_name)
+    text_field_with_auto_complete :client, :name , :skip_style => true
+  end
   
   def furtheractionrequired_form_column(record, input_name)
     select :record, :furtheractionrequired, 

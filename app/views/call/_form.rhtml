@@ -1,3 +1,5 @@
+<%= javascript_include_tag "scriptaculous" %>
+
 <ol class="form" <%= 'style="display: none;"' if columns.collapsed -%>>
   <li class="form-element ">Your are logged in as: <%= current_user.login -%>
   <% columns.each :for => @record do |column| -%>
