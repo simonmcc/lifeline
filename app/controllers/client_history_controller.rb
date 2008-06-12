@@ -5,7 +5,7 @@ class ClientHistoryController < ApplicationController
   include AuthenticatedSystem
   before_filter :login_required
   
-  auto_complete_for :client, :name
+  #auto_complete_for :client, :fname
 
   active_scaffold :client_history do |config|
 
@@ -20,6 +20,8 @@ class ClientHistoryController < ApplicationController
                       :clinical_consultation_required,
                       :followup_service
                       ]
+
+    config.columns[:client].form_ui = :auto_complete
 
     config.columns[:suicide_assessment].label = "Was risk of suicide assessed?"
     config.columns[:suicide_assessment].form_ui = :select
@@ -42,11 +44,21 @@ class ClientHistoryController < ApplicationController
     config.columns[:followup_service].label = "Has a follow up service been identified?"
     config.columns[:followup_service].form_ui = :select
   end
+
+  # method to populate the type down model_auto_completer
+  def auto_complete_belongs_to_for_record_client_id
+    auto_param = params[:client][:id]
+    @results = Client.find(:all,
+                           :conditions => ["LOWER(fname) LIKE ?", "%#{auto_param.downcase}%"],
+                           :limit => 10
+                )
+    render :inline => '<%= model_auto_completer_result(@results, :fname) %>'
+  end 
 end
 
 module ClientHistoryHelper
 
-  def client_form_column(record, input_name)
+  def XXXclient_form_column(record, input_name)
     text_field_with_auto_complete :client, :name , :skip_style => true
   end
 
