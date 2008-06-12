@@ -7,4 +7,8 @@ class Call < ActiveRecord::Base
   belongs_to  :type_of_call
 
   has_and_belongs_to_many :presenting_issues
+
+  def to_label
+    "#{created_at} (#{user[:login]})"
+  end
 end
