@@ -56,11 +56,8 @@ module ModelAutoCompleterHelper
     tf_name  = "#{association}[#{method}]"
     # tf_value = (real_object.send(association).send(method) rescue nil)
     tf_value = (real_object.send(association).send("to_label") rescue nil)
-    # The hiddef field (hf) should be of the form object[field][id]
-    # where field is the object referenced by the belongs_to relationship
     # hf_name  = "#{object}[#{foreign_key}]"
-    # hf_name  = "#{object[:name]}[id]" 
-    hf_name  = "#{object}[client][id]" 
+    hf_name  = "#{object}[#{association}][id]" 
     hf_value = (real_object.send(foreign_key) rescue nil)
     options  = {
       :action => "auto_complete_belongs_to_for_#{object}_#{association}_#{method}"
