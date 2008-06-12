@@ -21,8 +21,6 @@ class ClientHistoryController < ApplicationController
                       :followup_service
                       ]
 
-    #config.columns[:client].form_ui = :select
-
     config.columns[:suicide_assessment].label = "Was risk of suicide assessed?"
     config.columns[:suicide_assessment].form_ui = :select
 
@@ -46,7 +44,7 @@ class ClientHistoryController < ApplicationController
   end
 end
 
-module CallHistoryHelper
+module ClientHistoryHelper
 
   def client_form_column(record, input_name)
     text_field_with_auto_complete :client, :name , :skip_style => true

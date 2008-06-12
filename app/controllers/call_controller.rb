@@ -50,9 +50,6 @@ class CallController < ApplicationController
     config.columns[:user].form_ui = :select
     config.columns[:user].label = "Agent"
 
-    # This isn't right, it should really be a textbox with AJAX
-    # typedown lookups, but I have no docs :-)
-    config.columns[:client].form_ui = :textarea
     config.columns[:client].label = "Client ID"
 
     config.columns[:usedlifelinebefore].label = "Has the caller used LIFELINE before?"
