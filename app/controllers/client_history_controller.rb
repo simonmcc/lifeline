@@ -5,8 +5,6 @@ class ClientHistoryController < ApplicationController
   include AuthenticatedSystem
   before_filter :login_required
   
-  #auto_complete_for :client, :fname
-
   active_scaffold :client_history do |config|
 
     # Apply some order
@@ -58,9 +56,4 @@ end
 
 module ClientHistoryHelper
 
-  def XXXclient_form_column(record, input_name)
-    text_field_with_auto_complete :client, :name , :skip_style => true
-  end
-
 end
-

@@ -5,7 +5,6 @@ class CallController < ApplicationController
   include AuthenticatedSystem
   before_filter :login_required
 
-  auto_complete_for :client, :name
 
   active_scaffold :call do |config|
 
@@ -50,6 +49,7 @@ class CallController < ApplicationController
     config.columns[:user].form_ui = :select
     config.columns[:user].label = "Agent"
 
+    config.columns[:client].form_ui = :auto_complete
     config.columns[:client].label = "Client ID"
 
     config.columns[:usedlifelinebefore].label = "Has the caller used LIFELINE before?"
@@ -106,6 +106,19 @@ class CallController < ApplicationController
     record.user_id = logged_in_user.id
   end
 
+
+  # method to populate the type down model_auto_completer, but this should really
+  # be done with the following doobery:
+  # auto_complete_belongs_to_for "record", :client, :to_label
+  def auto_complete_belongs_to_for_record_client_id
+    auto_param = params[:client][:id]
+    @results = Client.find(:all,
+                           :conditions => ["LOWER(fname) LIKE ?", "%#{auto_param.downcase}%"],
+                           :limit => 10
+                )
+    render :inline => '<%= model_auto_completer_result(@results, :fname) %>'
+  end 
+
 end
 
 module CallHelper
@@ -118,10 +131,6 @@ module CallHelper
 		{ :selected => select_id, :prompt => true })
   end
 
-  def client_form_column(record, input_name)
-    text_field_with_auto_complete :client, :name , :skip_style => true
-  end
-  
   def furtheractionrequired_form_column(record, input_name)
     select :record, :furtheractionrequired, 
 		[['Yes - no further action required', false],
