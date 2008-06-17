@@ -1,4 +1,5 @@
 class CallController < ApplicationController
+  include ApplicationHelper
   layout 'application'
 
   # Protect this controller, login required
@@ -23,7 +24,7 @@ class CallController < ApplicationController
 			:gender, 
 			:age,
 			:location_trust,
-			:presenting_issues, 
+            :presenting_issues,     # virtual field, part of habtm
 			:awareofservices_id,
 			:type_of_call,
 			:furtheractionrequired,
@@ -83,6 +84,7 @@ class CallController < ApplicationController
 
     config.columns[:presenting_issues].label = 'What issues is the caller (or person the caller is concerned about) presenting with?'
     # disable the create/edit fucntionality for the presenting issues
+    # this displays a set of checkboxes for selecting issues
     config.columns[:presenting_issues].form_ui = :select
 
     config.columns[:awareofservices_id].label = 'Is the caller aware of the services offered by LIFELINE?'
@@ -118,6 +120,15 @@ class CallController < ApplicationController
                 )
     render :inline => '<%= model_auto_completer_result(@results, :fname) %>'
   end 
+
+  def update_subcategory_list
+      render :text => multi_select_collection("sub-categories", 
+                      PresentingIssue.find(:all, :conditions => ["category = ?", params[:categories]]),
+                                              {}, 
+                                              :id,
+                                              :to_label, 
+                                              size=5, "240px")
+  end
 
 end
 
@@ -158,6 +169,46 @@ module CallHelper
 
   def user_form_column(record, input_name)
     select("call", "user_id", User.find(:all).collect {|u| [u.login, u.id]})
+  end
+
+  def presenting_issues_form_column(record, input_name)
+
+    innerHTML = String.new
+    innerHTML << "<div style=\"\">"
+
+    # The main category list, cicking on this populates the sub-category list
+    innerHTML << "<div style=\"width:230px; float:left\">"
+    innerHTML << multi_select_collection("categories", PresentingIssue.getCategories,
+                                         {}, :to_s, :to_s)
+
+    innerHTML << observe_field(:categories, :url => { :action => :update_subcategory_list },
+               :update => "#{input_name}[sub]",
+               :with => 'categories')
+    innerHTML << "</div>"
+      
+    # This is empty until a category is clicked, this is then updated 
+    # via an AJAX update from the controller
+    innerHTML << "<div id=\"#{input_name}[sub]\" style=\"width:250px; float:left\">"
+    innerHTML << multi_select_collection("sub-categories", {}, {}, :to_s, :to_s, 5, "240px")
+    innerHTML << "</div>"
+    
+    innerHTML << "<div style=\"width:100px; float:left\">"
+    innerHTML << button_to_function("Add >>", 
+                  "f_optionAdd(0,'sub-categories','presenting_issues')")
+
+    innerHTML << button_to_function("<< Remove", 
+                  "f_optionRemove(0,'presenting_issues')")
+    innerHTML << "</div>"
+
+    innerHTML << "<div id=\"#{input_name}[picked]\" style=\"width:220px%; float:left;\">"
+    innerHTML << multi_select_collection("presenting_issues", 
+                                         record.presenting_issues,
+                                         {}, 
+                                         :id, :to_label)
+    innerHTML << "</div>"
+
+    innerHTML << "</div>"
+    innerHTML 
   end
 
 end

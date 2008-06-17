@@ -11,4 +11,5 @@ class ApplicationController < ActionController::Base
   # Does this negate the above?
   # http://ryandaigle.com/articles/2007/9/24/what-s-new-in-edge-rails-better-cross-site-request-forging-prevention
   self.allow_forgery_protection = false
+
 end
