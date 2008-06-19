@@ -134,6 +134,12 @@ end
 
 module CallHelper
 
+  def direct_call_form_column(record, input_name)
+      select("record", "direct_call", [ ['Direct', true ], ['Concern for others', false]],
+                                             { :selected => @record.direct_call, :prompt => true  })
+  end
+
+
   def usedlifelinebefore_form_column(record, input_name)
     select_id = @record.usedlifelinebefore
 
