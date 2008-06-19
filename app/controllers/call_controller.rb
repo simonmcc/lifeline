@@ -29,7 +29,7 @@ class CallController < ApplicationController
 			:type_of_call,
 			:furtheractionrequired,
 			:caller_satisfaction_id,
-			:length_of_call_id
+			:length_of_call
 			]
 
     config.list.columns = [:user, 
@@ -43,7 +43,7 @@ class CallController < ApplicationController
 			:age,
 			:type_of_call,
 			:furtheractionrequired,
-			:length_of_call_id
+			:length_of_call
 			]
 
 
@@ -96,8 +96,10 @@ class CallController < ApplicationController
 
     config.columns[:caller_satisfaction_id].label = 'Ask the caller to rate how satisfied s/he was with the service that the LIFELINE provided overall?'
 
-    config.columns[:length_of_call_id].label = 'Length of Call'
-
+    config.columns[:length_of_call].label = 'Length of Call'
+    config.columns[:length_of_call].form_ui = :select
+    
+    
     # This is set usingf the before_create_save method, instead of configurable on create
     config.create.columns.exclude :user
   end
