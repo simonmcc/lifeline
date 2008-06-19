@@ -16,8 +16,8 @@ class CallController < ApplicationController
 			:caller_name, 
 			:client,
 			:understoodconfidentiality, 
-			:emergency, 
 			:contact_telephone,
+			:emergency, 
 			:oktoidentify, 
 			:throughfirstcall, 
 			:referal_source, 
@@ -61,9 +61,9 @@ class CallController < ApplicationController
     config.columns[:understoodconfidentiality].label = "Has anyone from our service explained confidentiality to the caller before?"
     config.columns[:understoodconfidentiality].form_ui = :checkbox
 
-    config.columns[:emergency].label = "Is the caller ringing in an emergency?"
+    config.columns[:contact_telephone].label = 'In case the call gets interrupted, is the caller willing to give a contact telephone number?'
 
-    config.columns[:contact_telephone].label = 'In case the call gest interrupted, is the caller willing to give a contact telephone number?'
+    config.columns[:emergency].label = "Is the caller ringing in an emergency?"
 
     # Need to overide the form on this...
     config.columns[:oktoidentify].label = 'Is it OK to identify the service if LIFELINE rings this number?'
