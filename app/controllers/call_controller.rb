@@ -24,6 +24,8 @@ class CallController < ApplicationController
 			:gender, 
 			:age,
 			:location_trust,
+                        :location_town,
+                        :location_postcode,
             :presenting_issues,     # virtual field, part of habtm
 			:awareofservices_id,
 			:type_of_call,
@@ -79,8 +81,14 @@ class CallController < ApplicationController
 
     config.columns[:age].label = 'What age is the caller (or person the caller is concerned about)?'
 
-    config.columns[:location_trust].label = 'Where in the country is the caller (or person the caller is concerned about) ringing from (i.e. nearest town)?'
+    config.columns[:location_trust].label ='Where in the country is the caller (or person the caller is concerned about) ringing from (i.e. area)?'
     config.columns[:location_trust].form_ui = :select
+    
+    config.columns[:location_town].label ='Where is the caller (or person the caller is concerned about) ringing from (i.e. nearest town)?'
+    config.columns[:location_town].form_ui = :select
+    
+    config.columns[:location_postcode].label ='What is the postcode the caller (or person the caller is concerned about) ringing from?'
+    config.columns[:location_postcode].form_ui = :select
 
     config.columns[:presenting_issues].label = 'What issues is the caller (or person the caller is concerned about) presenting with?'
     # disable the create/edit fucntionality for the presenting issues
