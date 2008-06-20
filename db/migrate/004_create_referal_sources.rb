@@ -2,7 +2,7 @@ class CreateReferalSources < ActiveRecord::Migration
   def self.up
     create_table :referal_sources do |t|
       t.column :name,		:string
-      t.column :free_text,	:boolean,	:default => 'f'
+      t.column :free_text,	:boolean,	:default => false
       t.column :description, 	:string
     end
   end
