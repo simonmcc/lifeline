@@ -4,6 +4,7 @@ class Call < ActiveRecord::Base
   belongs_to  :client
   belongs_to  :gender
   belongs_to  :location_trust
+  belongs_to  :location_postcode
   belongs_to  :type_of_call
   belongs_to  :length_of_call
 
