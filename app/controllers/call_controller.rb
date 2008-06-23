@@ -1,4 +1,5 @@
 class CallController < ApplicationController
+
   include ApplicationHelper
   layout 'application'
 
@@ -43,7 +44,8 @@ class CallController < ApplicationController
 			:referal_source, 
 			:gender, 
 			:age,
-			:type_of_call,
+			:location_town,
+                        :type_of_call,
 			:furtheractionrequired,
 			:length_of_call
 			]
@@ -84,9 +86,10 @@ class CallController < ApplicationController
     config.columns[:location_trust].label ='Where in the country is the caller (or person the caller is concerned about) ringing from (i.e. area)?'
     config.columns[:location_trust].form_ui = :select
     
-    config.columns[:location_town].label ='Where is the caller (or person the caller is concerned about) ringing from (i.e. nearest town)?'
-    config.columns[:location_town].form_ui = :select
     
+    config.columns[:location_town].label ='Where is the caller (or person the caller is concerned about) ringing from (i.e. nearest town)?'
+    config.columns[:location_town].form_ui = :auto_complete
+
     config.columns[:location_postcode].label ='What is the postcode the caller (or person the caller is concerned about) ringing from?'
     config.columns[:location_postcode].form_ui = :select
 
@@ -130,6 +133,21 @@ class CallController < ApplicationController
                 )
     render :inline => '<%= model_auto_completer_result(@results, :fname) %>'
   end 
+
+
+
+
+  # method to populate the type down model_auto_complete
+  def auto_complete_belongs_to_for_record_location_town_id
+    auto_param = params[:location_town][:id]
+    @results = LocationTown.find(:all,
+    :conditions => ["LOWER(town_text) LIKE ?", "%#{auto_param.downcase}%"],
+    :limit => 10
+    )
+    render :inline => '<%= model_auto_completer_result(@results, :town_text) %>'
+  end
+  
+
 
   def update_subcategory_list
       render :text => multi_select_collection("sub-categories", 
