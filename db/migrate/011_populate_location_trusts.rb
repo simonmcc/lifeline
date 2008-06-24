@@ -8,6 +8,7 @@ class PopulateLocationTrusts < ActiveRecord::Migration
     LocationTrust.create(:name => 'Outside NI - Republic of Ireland')
     LocationTrust.create(:name => 'Outside NI - Other UK Countries')
     LocationTrust.create(:name => 'Outside NI - Other')
+
   end
 
   def self.down
