@@ -25,8 +25,8 @@ class CallController < ApplicationController
 			:gender, 
 			:age,
 			:location_trust,
-                        :location_town,
-                        :location_postcode,
+            :location_town,
+            :location_postcode,
             :presenting_issues,     # virtual field, part of habtm
 			:awareofservices_id,
 			:type_of_call,
@@ -141,21 +141,21 @@ class CallController < ApplicationController
   def auto_complete_belongs_to_for_record_location_town_id
     auto_param = params[:location_town][:id]
     @results = LocationTown.find(:all,
-    :conditions => ["LOWER(town_text) LIKE ?", "%#{auto_param.downcase}%"],
-    :limit => 10
-    )
+                                :conditions => ["LOWER(town_text) LIKE ?", "%#{auto_param.downcase}%"],
+                                :limit => 10
+                                )
     render :inline => '<%= model_auto_completer_result(@results, :town_text) %>'
   end
   
 
 
   def update_subcategory_list
-      render :text => multi_select_collection("sub-categories", 
-                      PresentingIssue.find(:all, :conditions => ["category = ?", params[:categories]]),
-                                              {}, 
-                                              :id,
-                                              :to_label, 
-                                              size=5, "240px")
+    render :text => multi_select_collection("sub-categories", 
+    PresentingIssue.find(:all, :conditions => ["category = ?", params[:categories]]),
+                            {}, 
+                            :id,
+                            :to_label, 
+                            size=5, "240px")
   end
 
 end
