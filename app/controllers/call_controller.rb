@@ -28,10 +28,10 @@ class CallController < ApplicationController
             :location_town,
             :location_postcode,
             :presenting_issues,     # virtual field, part of habtm
-			:awareofservices_id,
+			:aware_of_services,
 			:type_of_call,
 			:furtheractionrequired,
-			:caller_satisfaction_id,
+			:caller_satisfaction,
 			:length_of_call
 			]
 
@@ -98,15 +98,17 @@ class CallController < ApplicationController
     # this displays a set of checkboxes for selecting issues
     config.columns[:presenting_issues].form_ui = :select
 
-    config.columns[:awareofservices_id].label = 'Is the caller aware of the services offered by LIFELINE?'
+    config.columns[:aware_of_services].label = 'Is the caller aware of the services offered by LIFELINE?'
+    config.columns[:aware_of_services].form_ui = :select
 
     config.columns[:type_of_call].label = 'Identify the Type of Call IN'
     config.columns[:type_of_call].form_ui = :select
 
     config.columns[:furtheractionrequired].label = 'Did the assistance provided adequately address the need of the caller identified when ringing in?'
 
-    config.columns[:caller_satisfaction_id].label = 'Ask the caller to rate how satisfied s/he was with the service that the LIFELINE provided overall?'
-
+    config.columns[:caller_satisfaction].label = 'Ask the caller to rate how satisfied s/he was with the service that the LIFELINE provided overall?'
+    config.columns[:caller_satisfaction].form_ui = :select
+    
     config.columns[:length_of_call].label = 'Length of Call'
     config.columns[:length_of_call].form_ui = :select
     
