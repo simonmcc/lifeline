@@ -49,6 +49,11 @@ function f_optionAdd(form_name, s_from, s_to)
 
     }
   }
+
+  // Make sure everything is selected
+  for (var i = 0; i < e_to.options.length; i++) {
+      e_to.options[i].selected = true;
+  }
 }
 
 function f_optionRemove(form_name, s_from) 
@@ -62,5 +67,15 @@ function f_optionRemove(form_name, s_from)
     if (e_from.options[i].selected) {
       e_from.options[i] = null;
     }
+  }
+}
+
+function f_selectAll(form_name, select_name) 
+{
+  var e_select = document.forms[form_name].elements[select_name];
+
+  // Make sure everything is selected
+  for (var i = 0; i < e_select.options.length; i++) {
+      e_select.options[i].selected = true;
   }
 }
