@@ -11,7 +11,7 @@ class PresentingIssue < ActiveRecord::Base
     # Array to hold the categories
     categories = Array.new
 
-    rs = self.find_by_sql "SELECT DISTINCT category FROM presenting_issues"
+    rs = self.find_by_sql "SELECT DISTINCT category FROM presenting_issues ORDER BY id"
     rs.each {|p| categories << p.category }
 
     categories
