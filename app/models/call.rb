@@ -16,4 +16,15 @@ class Call < ActiveRecord::Base
   def to_label
     "#{created_at} (#{user[:login]})"
   end
+
+  def initialize(attributes = nil)
+    @call_start_time = DateTime.now
+    super
+  end
+
+  def before_create
+    self.created_at = @call_start_time
+    write_attribute(:call_start_time, @call_start_time)
+  end
+
 end

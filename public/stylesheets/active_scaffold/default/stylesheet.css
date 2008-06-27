@@ -504,7 +504,7 @@ margin-left: 5px;
 }
 
 .active-scaffold .show-view dt {
-width: 12em;
+width: 30em;
 float: left;
 clear: left;
 font: normal 11px verdana, sans-serif;
@@ -583,18 +583,19 @@ padding-top: 2px;
 }
 
 .active-scaffold label {
-font: normal 11px verdana, sans-serif;
+font: normal 14px verdana, sans-serif;
 color: #555;
 }
 
 .active-scaffold li.form-element dt {
 float: left;
-width: 12em;
+width: 24em;
 padding: 6px 0;
 }
 
 .active-scaffold li.form-element dd {
 float: left;
+padding: 6px 0;
 }
 
 .active-scaffold .description {

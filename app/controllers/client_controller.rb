@@ -10,18 +10,17 @@ class ClientController < ApplicationController
     config.columns =  [:fname,
                         :sname,
                         :mobile,
-                        :notes,
-                        :call,
-                        :call_out,
-                        :client_history]
+                        :notes
+                        #:call,
+                        #:call_out,
+                        #:risk_assessment
+                        ]
 
     config.list.columns =  [:fname,
                             :sname,
                             :mobile,
-                            :notes,
-                            :call,
-                            :call_out,
-                            :client_history]
+                            :notes
+                           ]
 
     config.update.columns =  [:fname,
                               :sname,
@@ -35,8 +34,6 @@ class ClientController < ApplicationController
                               :fr_number,
                               :gender,
                               :notes
-
-
                              ]
 
     config.columns[:fname].label = "Forename"
@@ -45,9 +42,11 @@ class ClientController < ApplicationController
     config.columns[:fr_fname].label = "Friend/Refer Forename"
     config.columns[:fr_sname].label = "Friend/Refer Surname"
 
-    config.columns[:call].label = "Friend/Refer Surname"
-    config.columns[:gender].form_ui = :select
+    #config.columns[:call].label = "Friend/Refer Surname"
+    #config.columns[:gender].form_ui = :select
 
+    #config.columns[:full_assessment].label = "Was a full assessment completed?"
+    #config.columns[:full_assessment].form_ui = :select
 
   end
 

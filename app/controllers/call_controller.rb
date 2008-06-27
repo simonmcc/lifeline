@@ -45,10 +45,17 @@ class CallController < ApplicationController
 			:gender, 
 			:age,
 			:location_town,
-                        :type_of_call,
+            :type_of_call,
 			:furtheractionrequired,
 			:length_of_call
 			]
+
+    #config.actions.exclude :show
+    #config.actions.exclude :update
+    config.actions.exclude :delete
+    config.show.link.page = true
+    config.update.link.page = true
+    #config.action_links.add 'show', :label => 'Show', :type => :record, :page => true
 
 
     config.columns[:user].form_ui = :select
