@@ -226,13 +226,30 @@ module CallHelper
 		{ :selected => select_id, :prompt => true })
   end
 
+  def location_trust_form_column(record, input_name)
+      select_id = @record.location_trust
+
+      select("record", "location_trust",
+                        LocationTrust.find(:all, :order => "id ASC").collect {|r| [r.name, r.id] },
+                        { :selected => select_id, :prompt => true })
+  end
+
+  def location_postcode_form_column(record, input_name)
+        select_id = @record.location_postcode
+
+        select("record", "location_postcode",
+                          LocationPostcode.find(:all, :order => "id ASC").collect {|r| [r.postcode_text, r.id] },
+                      {:selected => select_id, :prompt => true })
+  end
+
+
   def usedlifelinebefore_form_column(record, input_name)
     select_id = @record.usedlifelinebefore
 
     select("record", "usedlifelinebefore",
                 [['Yes (Known Caller)', true ], ['No (New Caller)', false]],
 		{ :selected => select_id, :prompt => true })
-  end
+  end  
 
   def furtheractionrequired_form_column(record, input_name)
     select :record, :furtheractionrequired, 
