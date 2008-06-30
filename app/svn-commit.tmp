@@ -1,0 +1,5 @@
+issue #88 hang up, silence, wrong number buttons at top of form
+--This line, and those below, will be ignored--
+
+M    controllers/call_controller.rb
+M    views/call/_form.rhtml
