@@ -218,6 +218,13 @@ module CallHelper
                                              { :selected => @record.direct_call, :prompt => true  })
   end
 
+  def referal_source_form_column(record, input_name)
+    select_id = @record.referal_source
+    
+    select("record", "referal_source",
+                     ReferalSource.find(:all, :order => "id ASC").collect {|r| [r.name, r.id] },
+		{ :selected => select_id, :prompt => true })
+  end
 
   def usedlifelinebefore_form_column(record, input_name)
     select_id = @record.usedlifelinebefore
