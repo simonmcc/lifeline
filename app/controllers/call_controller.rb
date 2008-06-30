@@ -167,7 +167,49 @@ class CallController < ApplicationController
                             size=5, "240px")
   end
 
+       def hang_up 
+          hangup_call = Call.new 
+          hangup_call.type_of_call = TypeOfCall.find(:first, :conditions => ["category = ?", 'Hang Up'])
+    
+          # Get the user_id from the logged in user (current_user.login)
+          logged_in_user =  User.find(:first, :conditions => ["login = ?", current_user.login])
+          hangup_call.user_id = logged_in_user.id
+
+          hangup_call.save
+
+          redirect_to :action => 'new'
+       end
+
+      def silence 
+         silence_call = Call.new
+         silence_call.type_of_call = TypeOfCall.find(:first, :conditions => ["category = ?", 'Silent Call'])
+
+         # Get the user_id from the logged in user (current_user.login)
+         logged_in_user =  User.find(:first, :conditions => ["login = ?", current_user.login])
+         silence_call.user_id = logged_in_user.id
+
+         silence_call.save
+
+        redirect_to :action => 'new'
+      end
+
+      def wrong_no 
+        wrong_no_call = Call.new
+        wrong_no_call.type_of_call = TypeOfCall.find(:first, :conditions => ["category = ?", 'Wrong Number'])
+        
+        # Get the user_id from the logged in user (current_user.login)
+        logged_in_user =  User.find(:first, :conditions => ["login = ?", current_user.login])
+        wrong_no_call.user_id = logged_in_user.id
+        
+        wrong_no_call.save
+        
+        redirect_to :action => 'new'
+      end
 end
+
+
+
+
 
 module CallHelper
 
@@ -253,5 +295,6 @@ module CallHelper
     innerHTML << "</div>"
     innerHTML 
   end
+
 
 end
