@@ -1,5 +1,6 @@
 class RiskAssessment < ActiveRecord::Base
   belongs_to  :client
+  belongs_to  :user
 
   belongs_to :risk_assessment_type
   belongs_to :risk_assessment_outcome
