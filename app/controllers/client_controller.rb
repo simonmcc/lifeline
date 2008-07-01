@@ -10,10 +10,24 @@ class ClientController < ApplicationController
     config.columns =  [:fname,
                         :sname,
                         :mobile,
-                        :notes
-                        #:call,
-                        #:call_out,
-                        #:risk_assessment
+                        :notes,
+                        :address,
+                        :town,
+                        :post_code,
+                        :landline,
+                        :fr_fname,
+                        :fr_sname,
+                        :fr_number,
+                        :gender,
+                        :dob,
+                        :understoodconfidentiality,
+                        :rf_fname,
+                        :rf_sname,
+                        :rf_designation,
+                        :rf_address,
+                        :rf_town,
+                        :rf_post_code,
+                        :rf_number
                         ]
 
     config.list.columns =  [:fname,
@@ -36,6 +50,10 @@ class ClientController < ApplicationController
                               :notes
                              ]
 
+    config.actions.exclude :delete
+    config.show.link.page = true
+    config.update.link.page = true
+
     config.columns[:fname].label = "Forename"
     config.columns[:sname].label = "Surname"
 
@@ -43,12 +61,21 @@ class ClientController < ApplicationController
     config.columns[:fr_sname].label = "Friend/Refer Surname"
 
     #config.columns[:call].label = "Friend/Refer Surname"
-    #config.columns[:gender].form_ui = :select
+    config.columns[:gender].form_ui = :select
+    config.columns[:understoodconfidentiality].form_ui = :checkbox
 
     #config.columns[:full_assessment].label = "Was a full assessment completed?"
     #config.columns[:full_assessment].form_ui = :select
 
   end
 
+  def new_call
+  end
+
+  def new_call_out
+  end
+
+  def new_risk_assessment
+  end
 
 end

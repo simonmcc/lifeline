@@ -35,24 +35,23 @@ class CallController < ApplicationController
 			:length_of_call
 			]
 
-    config.list.columns = [:user, 
+    config.list.columns = [
 			:created_at,
-			:direct_call, 
-			:caller_name, 
-			:client,
-			:emergency, 
-			:referal_source, 
-			:gender, 
-			:age,
-			:location_town,
+            :presenting_issues,     # virtual field, part of habtm
+            :user, 
+			:length_of_call,
             :type_of_call,
-			:furtheractionrequired,
-			:length_of_call
+            :direct_call,
+			:caller_name, 
+			:client
 			]
 
     #config.actions.exclude :show
     #config.actions.exclude :update
     config.actions.exclude :delete
+
+    # This hides the "Create New" link for the list view
+    config.create.link = nil
     config.show.link.page = true
     config.update.link.page = true
     #config.action_links.add 'show', :label => 'Show', :type => :record, :page => true

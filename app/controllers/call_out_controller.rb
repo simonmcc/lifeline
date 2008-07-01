@@ -11,8 +11,8 @@ class CallOutController < ApplicationController
     # Apple some order to the fields being displayed
     config.columns = [:time_of_call, 
                       :client,
-                      :call_outcome,
                       :call_out_type,
+                      :call_outcome,
                       :notes]
    
     

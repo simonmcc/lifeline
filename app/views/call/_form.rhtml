@@ -1,12 +1,8 @@
 <%= javascript_include_tag :defaults %>
-<div id="hang_up_div">
-  <%= link_to( "Hang Up",  :action => :hang_up ) %>
-</div>
-<div id="silence_div">
-  <%= link_to( "Silence", :action => :silence ) %>
-</div>
-<div id="wrong_no_div">
-  <%= link_to( "Wrong Number", :action => :wrong_no ) %>
+<div id="quick_close_links" style="float:right; width:250px;">
+    <%= link_to( "Hang Up",  :action => :hang_up ) %>
+    <%= link_to( "Silence", :action => :silence ) %>
+    <%= link_to( "Wrong Number", :action => :wrong_no ) %>
 </div>
 
 <ol class="form" <%= 'style="display: none;"' if columns.collapsed -%>>

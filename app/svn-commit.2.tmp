@@ -1,5 +1,0 @@
-issue #88
---This line, and those below, will be ignored--
-
-M    controllers/call_controller.rb
-M    views/call/_form.rhtml

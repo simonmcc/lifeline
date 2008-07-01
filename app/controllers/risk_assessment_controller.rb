@@ -15,6 +15,16 @@ class RiskAssessmentController < ApplicationController
                       :clinical_consultation_required,
                       :followup_service
                       ]
+                      
+    # Stuff we want show in the list/index view
+    config.list.columns = [
+                      :client,
+                      :created_at,
+                      :user,
+                      :risk_assessment_type,
+                      :risk_assessment_outcome,
+                      :clinical_consultation_required,
+                      ]
 
     config.columns[:client].form_ui = :auto_complete
 
