@@ -4,4 +4,7 @@ module ClientHelper
     select("record", "clinical_consultation_required", [['Yes', true ], ['No',  false ]],
               { :selected => @record.clinical_consultation_required, :prompt => true  })
   end
+
+
+
 end

@@ -222,6 +222,11 @@ module CallHelper
       select("record", "direct_call", [ ['Direct', true ], ['Concern for others', false]],
                                              { :selected => @record.direct_call, :prompt => true  })
   end
+  
+  def direct_call_column(record)
+    record.direct_call ? "Direct" : "Concern for others"
+
+  end
 
   def referal_source_form_column(record, input_name)
     select_id = @record.referal_source
@@ -248,12 +253,12 @@ module CallHelper
   end
 
  def length_of_call_form_column(record, input_name)
-           select_id = @record.length_of_call
+        select_id = @record.length_of_call
 
-                   select("record", "length_of_call",
-                                                    LengthOfCall.find(:all, :order => "id ASC").collect {|r| [r.duration_text, r.id] },
-                                                                          {:selected => select_id, :prompt => true })
-                     end
+        select("record", "length_of_call",
+                          LengthOfCall.find(:all, :order => "id ASC").collect {|r| [r.duration_text, r.id] },
+                      {:selected => select_id, :prompt => true })
+ end
 
 
   def usedlifelinebefore_form_column(record, input_name)
@@ -263,6 +268,15 @@ module CallHelper
                 [['Yes (Known Caller)', true ], ['No (New Caller)', false]],
 		{ :selected => select_id, :prompt => true })
   end  
+  
+  def usedlifelinebefore_column(record)
+    if record.usedlifelinebefore
+      "Yes (Known Caller)"
+    else
+      "No (New Caller)"
+    end
+    
+  end
 
   def furtheractionrequired_form_column(record, input_name)
     select :record, :furtheractionrequired, 
@@ -270,12 +284,30 @@ module CallHelper
 	         ['No - action required recorded', true]],
 		{ :prompt => true, :selected => @record.furtheractionrequired }
   end
+  
+  def furtheractionrequired_form_column(record, input_name)
+    if record.furtheractionrequired
+      "Yes - no further action required"
+    else
+      "No - action required recorded"
+    end
+
+  end
 
 
   def emergency_form_column(record, input_name)
-    select("record", "emergency", [['Yes - move to immediatly risk assess the situation', true ],
+    select("record", "emergency", [['Yes - move to immediate risk assess the situation', true ],
                                    ['No - continue',  false ]],
                                 { :selected => @record.emergency, :prompt => true  })
+  end
+
+    def emergency_column(record)
+    if record.emergency
+      "Yes-move to immediate risk assess the situation"
+    else
+      "No-continue"
+    end
+    
   end
 
   def oktoidentify_form_column(record, input_name)
@@ -283,10 +315,37 @@ module CallHelper
                                    ['No - do not identify the service when ringing', false]],
                                 { :selected => @record.oktoidentify, :prompt => true  })
   end
+  
+  def oktoidentify_column(record)
+    if record.oktoidentify
+      "Yes"
+    else
+      "No-do not identify the service when ringing"
+    end
+    
+  end
 
   def throughfirstcall_form_column(record, input_name)
     select("record", "throughfirstcall", [ ['Yes', true ], ['No - (Call waiting/engaged)', false]],
                                 { :selected => @record.throughfirstcall, :prompt => true  })
+  end
+  
+  def throughfirstcall_column(record)
+    if record.throughfirstcall
+      "Yes"
+    else
+      "No-(Call waiting/engaged)"
+    end
+    
+  end
+  
+  def furtheractionrequired_column(record)
+    if record.furtheractionrequired
+      "Yes-no further action required"
+    else
+      "No-action required recorded"
+    end
+    
   end
 
   def user_form_column(record, input_name)
