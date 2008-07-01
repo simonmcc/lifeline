@@ -242,6 +242,14 @@ module CallHelper
                       {:selected => select_id, :prompt => true })
   end
 
+ def length_of_call_form_column(record, input_name)
+           select_id = @record.length_of_call
+
+                   select("record", "length_of_call",
+                                                    LengthOfCall.find(:all, :order => "id ASC").collect {|r| [r.duration_text, r.id] },
+                                                                          {:selected => select_id, :prompt => true })
+                     end
+
 
   def usedlifelinebefore_form_column(record, input_name)
     select_id = @record.usedlifelinebefore
