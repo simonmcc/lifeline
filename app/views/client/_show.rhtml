@@ -5,10 +5,11 @@
 <div style="float:right;">
   <%= link_to "Add New Call", { :controller => "call", 
                                 :action => "new", 
-                                :client_id => @client.object_id } %> | 
-  <%= link_to "Add New Risk Assessment", { :action => "new_risk_assessment", 
-                                              :client_id => @client.object_id } %> | 
-  <%= link_to "Add New Call Out", { :action => "new_call", :client_id => @client.object_id } %>
+                                :client_id => params[:id] } %> | 
+  <%= link_to "Add New Call Out", { :controller => "call_out", :action => "new", :client_id => params[:id] } %> | 
+  <%= link_to "Add New Risk Assessment", { :controller => "risk_assessment", 
+                                            :action => "new", 
+                                            :client_id => params[:id] } %> | 
 </div>
 
 <%= render :partial => 'show_columns', :locals => {:columns => active_scaffold_config.show.columns} -%>

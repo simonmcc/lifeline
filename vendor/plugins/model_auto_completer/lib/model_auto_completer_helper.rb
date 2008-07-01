@@ -55,12 +55,23 @@ module ModelAutoCompleterHelper
 
     tf_name  = "#{association}[#{method}]"
     # tf_value = (real_object.send(association).send(method) rescue nil)
-    tf_value = (real_object.send(association).send("to_label") rescue nil)
+    if options[:tf_value].nil? 
+      tf_value = (real_object.send(association).send("to_label") rescue nil)
+    else
+      tf_value = options[:tf_value]
+    end 
+
     # hf_name  = "#{object}[#{foreign_key}]"
     hf_name  = "#{object}[#{association}][id]" 
-    hf_value = (real_object.send(foreign_key) rescue nil)
+    if options[:hf_value].nil?
+      hf_value = (real_object.send(foreign_key) rescue nil)
+    else
+      hf_value = options[:hf_value]
+    end
+
     options  = {
-      :action => "auto_complete_belongs_to_for_#{object}_#{association}_#{method}"
+      :action => "auto_complete_belongs_to_for_#{object}_#{association}_#{method}",
+      :allow_free_text      => true
     }.merge(options)
     model_auto_completer(tf_name, tf_value, hf_name, hf_value, options, tag_options, completion_options)
   end
@@ -178,6 +189,7 @@ module ModelAutoCompleterHelper
       :regexp_for_id        => '(\d+)$',
       :append_random_suffix => true,
       :allow_free_text      => false,
+      :show_hidden_field    => true,
       :submit_on_return     => false,
       :controller           => controller.controller_name,
       :action               => 'auto_complete_model_for_' + tf_name.sub(/\[/, '_').gsub(/\[\]/, '_').gsub(/\[?\]$/, ''),
@@ -189,13 +201,22 @@ module ModelAutoCompleterHelper
     determine_tag_options(hf_id, tf_id, options, tag_options)
     determine_completion_options(hf_id, options, completion_options)
 
-    return <<-HTML
-      #{auto_complete_stylesheet unless completion_options[:skip_style]}
-      #{hidden_field_tag(hf_name, hf_value, :id => hf_id)}
+    innerHTML = String.new
+    innerHTML << "#{auto_complete_stylesheet unless completion_options[:skip_style]}"
+
+    if (options[:show_hidden_field])
+      innerHTML << "#{text_field_tag hf_name, hf_value, {:id => hf_id, :readonly => true, :size => 5} }"
+    else
+      innerHTML << "#{hidden_field_tag(hf_name, hf_value, :id => hf_id)}"
+    end
+
+    innerHTML << <<-HTML
       #{text_field_tag tf_name, tf_value, tag_options}
       #{content_tag("div", "", :id => "#{tf_id}_auto_complete", :class => "auto_complete")}
       #{auto_complete_field tf_id, completion_options}
     HTML
+
+    return innerHTML
   end
 
 private

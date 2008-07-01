@@ -14,7 +14,7 @@ class CallController < ApplicationController
 			:created_at,
 			:usedlifelinebefore, 
 			:direct_call, 
-			:caller_name, 
+			# :caller_name, 
 			:client,
 			:understoodconfidentiality, 
 			:contact_telephone,
@@ -127,6 +127,12 @@ class CallController < ApplicationController
     # Get the user_id from the logged in user (current_user.login)
     logged_in_user =  User.find(:first, :conditions => ["login = ?", current_user.login])
     record.user_id = logged_in_user.id
+
+    # Can we check here to see if client/client_id is nil?
+    p record
+    if record[:client_id].nil?
+      p "what can we look for here?"
+    end
   end
 
 
@@ -327,5 +333,19 @@ module CallHelper
     innerHTML 
   end
 
+  # Override the form_ui so that we can prepopulate this field
+  def client_form_column(record, input_name)
+    if !self.params_for['client_id'].nil?
+      # We have defaults to populate from :-)
+      client = Client.find(self.params_for['client_id'])
+      options = {:hf_value => client.id, :tf_value => client.to_label }
+    else
+      options = {}
+    end
+
+    # although form_ui = auto_complete, we want to play around abit
+    # and generate the html ourselves...
+    belongs_to_auto_completer :record, :client, :id, options
+  end
 
 end

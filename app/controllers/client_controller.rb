@@ -50,6 +50,9 @@ class ClientController < ApplicationController
                               :notes
                              ]
 
+    # This hides the "Create New" link for the list view
+    config.create.link = nil
+   
     config.actions.exclude :delete
     config.show.link.page = true
     config.update.link.page = true

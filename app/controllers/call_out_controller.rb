@@ -14,7 +14,8 @@ class CallOutController < ApplicationController
                       :call_out_type,
                       :call_outcome,
                       :notes]
-   
+    # This hides the "Create New" link for the list view
+    config.create.link = nil
     
     # Don't do the sub-form thing on create, just pick from existing entries
     config.columns[:client].form_ui = :auto_complete
@@ -41,4 +42,23 @@ class CallOutController < ApplicationController
     render :inline => '<%= model_auto_completer_result(@results, :fname) %>'
   end 
  
+end
+
+module CallOutHelper
+
+  # Override the form_ui so that we can prepopulate this field
+  def client_form_column(record, input_name)
+    if !self.params_for['client_id'].nil?
+      # We have defaults to populate from :-)
+      client = Client.find(self.params_for['client_id'])
+      options = {:hf_value => client.id, :tf_value => client.to_label }
+    else
+      options = {}
+    end
+
+    # although form_ui = auto_complete, we want to play around abit
+    # and generate the html ourselves...
+    belongs_to_auto_completer :record, :client, :id, options
+  end
+
 end
