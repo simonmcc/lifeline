@@ -53,7 +53,7 @@ module ModelAutoCompleterHelper
     real_object  = instance_variable_get("@#{object}")
     foreign_key  = real_object.class.reflect_on_association(association).primary_key_name
 
-    tf_name  = "#{association}[#{method}]"
+    tf_name  = "#{object}[#{association}][text]"
     # tf_value = (real_object.send(association).send(method) rescue nil)
     if options[:tf_value].nil? 
       tf_value = (real_object.send(association).send("to_label") rescue nil)
@@ -62,7 +62,7 @@ module ModelAutoCompleterHelper
     end 
 
     # hf_name  = "#{object}[#{foreign_key}]"
-    hf_name  = "#{object}[#{association}][id]" 
+    hf_name  = "#{object}[#{association}][#{method}]" 
     if options[:hf_value].nil?
       hf_value = (real_object.send(foreign_key) rescue nil)
     else
@@ -71,7 +71,7 @@ module ModelAutoCompleterHelper
 
     options  = {
       :action => "auto_complete_belongs_to_for_#{object}_#{association}_#{method}",
-      :allow_free_text      => true
+      :allow_free_text      => true,
     }.merge(options)
     model_auto_completer(tf_name, tf_value, hf_name, hf_value, options, tag_options, completion_options)
   end

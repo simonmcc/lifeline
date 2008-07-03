@@ -128,11 +128,14 @@ class CallController < ApplicationController
     logged_in_user =  User.find(:first, :conditions => ["login = ?", current_user.login])
     record.user_id = logged_in_user.id
 
-    # Can we check here to see if client/client_id is nil?
-    p record
+    # did any of our model_auto_completer fields have new/non-existing values?
     if record[:client_id].nil?
-      p "what can we look for here?"
+      p "New client needs to be created!!"
+      p record
+      p "New client needs to be created!!"
+      p self.params[:record][:client][:text]
     end
+
   end
 
 
@@ -140,7 +143,7 @@ class CallController < ApplicationController
   # be done with the following doobery:
   # auto_complete_belongs_to_for "record", :client, :to_label
   def auto_complete_belongs_to_for_record_client_id
-    auto_param = params[:client][:id]
+    auto_param = params[:record][:client][:text]
     @results = Client.find(:all,
                            :conditions => ["LOWER(fname) LIKE ?", "%#{auto_param.downcase}%"],
                            :limit => 10
@@ -153,7 +156,7 @@ class CallController < ApplicationController
 
   # method to populate the type down model_auto_complete
   def auto_complete_belongs_to_for_record_location_town_id
-    auto_param = params[:location_town][:id]
+    auto_param = params[:record][:location_town][:text]
     @results = LocationTown.find(:all,
                                 :conditions => ["LOWER(town_text) LIKE ?", "%#{auto_param.downcase}%"],
                                 :limit => 10
@@ -405,6 +408,18 @@ module CallHelper
     # although form_ui = auto_complete, we want to play around abit
     # and generate the html ourselves...
     belongs_to_auto_completer :record, :client, :id, options
+  end
+
+  def direct_call_column(record)
+    record.direct_call ?  "Direct" : "Concern for others"
+  end
+
+  def emergency_column(record)
+    if record.emergency
+      "Yes"
+    else
+      "No"
+    end
   end
 
 end
