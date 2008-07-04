@@ -42,7 +42,6 @@ class CallController < ApplicationController
 			:length_of_call,
             :type_of_call,
             :direct_call,
-			:caller_name, 
 			:client
 			]
 
@@ -288,16 +287,6 @@ module CallHelper
 		{ :prompt => true, :selected => @record.furtheractionrequired }
   end
   
-  def furtheractionrequired_form_column(record, input_name)
-    if record.furtheractionrequired
-      "Yes - no further action required"
-    else
-      "No - action required recorded"
-    end
-
-  end
-
-
   def emergency_form_column(record, input_name)
     select("record", "emergency", [['Yes - move to immediate risk assess the situation', true ],
                                    ['No - continue',  false ]],
