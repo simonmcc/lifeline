@@ -11,11 +11,11 @@ class PopulateReferalSources < ActiveRecord::Migration
     ReferalSource.create(:name => 'Poster/Leaflet/Card')
     ReferalSource.create(:name => 'Phone Book')
     ReferalSource.create(:name => 'Friend/Relative')
-    ReferalSource.create(:name => 'Health Professional', :free_text => 't')
-    ReferalSource.create(:name => 'Community/Voluntary Worker', :free_text => 't')
+    ReferalSource.create(:name => 'Health Professional', :free_text => true)
+    ReferalSource.create(:name => 'Community/Voluntary Worker', :free_text => true)
     ReferalSource.create(:name => 'Internet')
     ReferalSource.create(:name => 'School')
-    ReferalSource.create(:name => 'Other', :free_text => 't')
+    ReferalSource.create(:name => 'Other', :free_text => true)
   end
 
   def self.down
