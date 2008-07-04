@@ -57,7 +57,7 @@ class CallController < ApplicationController
 
 
     config.columns[:user].form_ui = :select
-    config.columns[:user].label = "Agent"
+    config.columns[:user].label = "Counsellor"
 
     config.columns[:client].form_ui = :auto_complete
     config.columns[:client].label = "Client ID"
