@@ -11,7 +11,9 @@ class AllocationController < ApplicationController
     config.columns = [:user,
                       :client,
                       :allocation_service,
-                      :allocation_service_note
+                      :allocation_service_note,
+                      :num_of_intervention_session,
+                      :date_intervention_ended
     ]
 
     # Stuff we want show in the list/index view
@@ -34,8 +36,14 @@ class AllocationController < ApplicationController
     config.columns[:allocation_service].label = "Allocation Service"
     config.columns[:allocation_service].form_ui = :select
     
-    config.create.columns.add_subgroup "Post Alloaction Info" do |post_group| post_group.add:num_of_intervention_session,:date_intervention_ended
-    end
+    #to group date and num session at end of form
+    #config.create.columns.add_subgroup "Post Alloaction Info" do |post_group| post_group.add:num_of_intervention_session,:date_intervention_ended
+    #end
+
+    
+    config.columns[:num_of_intervention_session].label = "Please enter the number of intervention sessions"
+    
+    config.columns[:date_intervention_ended].label = "Enter date intervention ended"
 
     
     config.columns[:allocation_service_note].label = "Any addition notes about the allocation service?"

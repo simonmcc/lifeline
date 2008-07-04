@@ -4,10 +4,11 @@
 	<dt><label>Your are logged in as:</label></dt>
 	<dd><label><%= current_user.login -%></label></dd>
 	</dl>
-  </li>
+        </li> 
   <% columns.each :for => @record do |column| -%>
   <% if is_subsection? column -%>
   <li class="sub-section">
+  <dl>
     <h5><%= column.label %> (<%= link_to_visibility_toggle(:default_visible => !column.collapsed) -%>)</h5>
     <%= render :partial => 'form', :locals => { :columns => column } %>
   </li>
@@ -17,7 +18,7 @@
   </li>
   <% else -%>
   <li class="form-element <%= 'required' if column.required? %>">
-    <%= render :partial => form_partial_for_column(column), :locals => { :column => column } -%>
+  <%= render :partial => form_partial_for_column(column), :locals => { :column => column } -%>
   </li>
   <% end -%>
   <% end -%>
