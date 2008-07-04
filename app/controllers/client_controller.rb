@@ -63,22 +63,16 @@ class ClientController < ApplicationController
     config.columns[:fr_fname].label = "Friend/Refer Forename"
     config.columns[:fr_sname].label = "Friend/Refer Surname"
 
-    #config.columns[:call].label = "Friend/Refer Surname"
     config.columns[:gender].form_ui = :select
+
+    config.columns[:notes].form_ui = :textarea
+    config.columns[:notes].options = {:rows => 10, :cols => 60}
+
     config.columns[:understoodconfidentiality].form_ui = :checkbox
 
     #config.columns[:full_assessment].label = "Was a full assessment completed?"
     #config.columns[:full_assessment].form_ui = :select
 
-  end
-
-  def new_call
-  end
-
-  def new_call_out
-  end
-
-  def new_risk_assessment
   end
 
 end
