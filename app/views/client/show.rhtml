@@ -10,5 +10,8 @@
     <div>
       <%= render :active_scaffold => 'risk_assessment', :conditions => ['client_id = ?', @client.object_id] %>
     </div>
+    <div>
+      <%= render :active_scaffold => 'allocation', :conditions => ['client_id = ?', @client.object_id] %>
+    </div>
   </div>
 </div>

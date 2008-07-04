@@ -11,8 +11,6 @@ class AllocationController < ApplicationController
     config.columns = [:user,
                       :client,
                       :allocation_service,
-                      :date_intervention_ended,
-                      :num_of_intervention_session,
                       :allocation_service_note
     ]
 
@@ -36,11 +34,13 @@ class AllocationController < ApplicationController
     config.columns[:allocation_service].label = "Allocation Service"
     config.columns[:allocation_service].form_ui = :select
     
-    config.columns[:date_intervention_ended].label = "Date intervention ended"
+    config.create.columns.add_subgroup "Post Alloaction Info" do |post_group| post_group.add:num_of_intervention_session,:date_intervention_ended
+    end
 
-    config.columns[:num_of_intervention_session].label = "Number of intervention sessions to date?"
     
     config.columns[:allocation_service_note].label = "Any addition notes about the allocation service?"
+    config.columns[:allocation_service_note].form_ui = :textarea
+    config.columns[:allocation_service_note].options = { :cols => 60, :rows => 20}
 
     # This hides the "Create New" link for the list view
     config.create.link = nil

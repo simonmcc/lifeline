@@ -13,8 +13,10 @@ class RiskAssessmentController < ApplicationController
                       :risk_assessment_outcome,
                       :safety_contract,
                       :clinical_consultation_required,
-                      :followup_service
-                      ]
+                      :followup_service,
+                      :risk_assessment_note                  
+
+    ]
                       
     # Stuff we want show in the list/index view
     config.list.columns = [
@@ -41,6 +43,10 @@ class RiskAssessmentController < ApplicationController
 
     config.columns[:followup_service].label = "Has a follow up service been identified?"
     config.columns[:followup_service].form_ui = :select
+ 
+    config.columns[:risk_assessment_note].label = "Any addition notes for risk assessment?"
+  
+  
   end
 
   # method to populate the type down model_auto_completer

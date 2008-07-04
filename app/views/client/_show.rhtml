@@ -10,6 +10,9 @@
   <%= link_to "Add New Risk Assessment", { :controller => "risk_assessment", 
                                             :action => "new", 
                                             :client_id => params[:id] } %> | 
+  <%= link_to "Add New Allocation Service", { :controller => "allocation", 
+                                            :action => "new", 
+                                            :client_id => params[:id] } %> | 
 </div>
 
 <%= render :partial => 'show_columns', :locals => {:columns => active_scaffold_config.show.columns} -%>

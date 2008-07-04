@@ -91,7 +91,6 @@ class CallController < ApplicationController
     config.columns[:location_trust].label ='Where in the country is the caller (or person the caller is concerned about) ringing from (i.e. area)?'
     config.columns[:location_trust].form_ui = :select
     
-    
     config.columns[:location_town].label ='Where is the caller (or person the caller is concerned about) ringing from (i.e. nearest town)?'
     config.columns[:location_town].form_ui = :auto_complete
 
@@ -118,7 +117,7 @@ class CallController < ApplicationController
     config.columns[:length_of_call].form_ui = :select
     
     
-    # This is set usingf the before_create_save method, instead of configurable on create
+    # This is set using the before_create_save method, instead of configurable on create
     config.create.columns.exclude :user
   end
 
