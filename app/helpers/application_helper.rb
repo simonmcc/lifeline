@@ -19,4 +19,24 @@ module ApplicationHelper
     result << "</select>\n"
     return result
   end
+
+  def CY_select_collection(collection_name, list_selections,
+                              current_selection, value_method,
+                              text_method, size=5, width="220px")
+
+      result = "<select name=\"record[#{collection_name}][id]\" id=\"#{collection_name}\""
+      result << " style=\"width:#{width}\""
+      result << " size=\"#{size}\"" if size != 1
+      result << " >\n" if size != 1
+      if list_selections != nil
+        list_selections.each do |l|
+          result << "<option "
+          result << "selected " if current_selection == l
+          result << "value=\"#{l.send(value_method)}\""
+          result << " /> #{l.send(text_method)} </option>\n"
+      end
+    end
+    result << "</select>\n"
+    return result
+  end
 end

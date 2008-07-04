@@ -106,7 +106,6 @@ class CallController < ApplicationController
     config.columns[:aware_of_services].form_ui = :select
 
     config.columns[:type_of_call].label = 'Identify the Type of Call IN'
-    config.columns[:type_of_call].form_ui = :select
 
     config.columns[:furtheractionrequired].label = 'Did the assistance provided adequately address the need of the caller identified when ringing in?'
 
@@ -161,56 +160,58 @@ class CallController < ApplicationController
                                 )
     render :inline => '<%= model_auto_completer_result(@results, :town_text) %>'
   end
-  
-
 
   def update_subcategory_list
     render :text => multi_select_collection("sub-categories", 
-    PresentingIssue.find(:all, :conditions => ["category = ?", params[:categories]]),
-                            {}, 
-                            :id,
-                            :to_label, 
-                            size=5, "240px")
+                                            PresentingIssue.find(:all, :conditions => ["category = ?", params[:categories]]),
+                                            {}, 
+                                            :id,
+                                            :to_label, 
+                                            size=5, "240px")
+  end
+  
+  def update_toc_subcategory_list
+    render :text => CY_select_collection("type_of_call", TypeOfCall.find(:all, :conditions => ["category = ?", params[:toc_categories]]), {}, :id, :to_label, 1, '300px')
   end
 
-       def hang_up 
-          hangup_call = Call.new 
-          hangup_call.type_of_call = TypeOfCall.find(:first, :conditions => ["category = ?", 'Hang Up'])
-    
-          # Get the user_id from the logged in user (current_user.login)
-          logged_in_user =  User.find(:first, :conditions => ["login = ?", current_user.login])
-          hangup_call.user_id = logged_in_user.id
+  def hang_up 
+    hangup_call = Call.new 
+    hangup_call.type_of_call = TypeOfCall.find(:first, :conditions => ["category = ?", 'Hang Up'])
 
-          hangup_call.save
+    # Get the user_id from the logged in user (current_user.login)
+    logged_in_user =  User.find(:first, :conditions => ["login = ?", current_user.login])
+    hangup_call.user_id = logged_in_user.id
 
-          redirect_to :action => 'new'
-       end
+    hangup_call.save
 
-      def silence 
-         silence_call = Call.new
-         silence_call.type_of_call = TypeOfCall.find(:first, :conditions => ["category = ?", 'Silent Call'])
+    redirect_to :action => 'new'
+  end
 
-         # Get the user_id from the logged in user (current_user.login)
-         logged_in_user =  User.find(:first, :conditions => ["login = ?", current_user.login])
-         silence_call.user_id = logged_in_user.id
+  def silence 
+    silence_call = Call.new
+    silence_call.type_of_call = TypeOfCall.find(:first, :conditions => ["category = ?", 'Silent Call'])
 
-         silence_call.save
+    # Get the user_id from the logged in user (current_user.login)
+    logged_in_user =  User.find(:first, :conditions => ["login = ?", current_user.login])
+    silence_call.user_id = logged_in_user.id
 
-        redirect_to :action => 'new'
-      end
+    silence_call.save
 
-      def wrong_no 
-        wrong_no_call = Call.new
-        wrong_no_call.type_of_call = TypeOfCall.find(:first, :conditions => ["category = ?", 'Wrong Number'])
-        
-        # Get the user_id from the logged in user (current_user.login)
-        logged_in_user =  User.find(:first, :conditions => ["login = ?", current_user.login])
-        wrong_no_call.user_id = logged_in_user.id
-        
-        wrong_no_call.save
-        
-        redirect_to :action => 'new'
-      end
+    redirect_to :action => 'new'
+  end
+
+  def wrong_no 
+    wrong_no_call = Call.new
+    wrong_no_call.type_of_call = TypeOfCall.find(:first, :conditions => ["category = ?", 'Wrong Number'])
+
+    # Get the user_id from the logged in user (current_user.login)
+    logged_in_user =  User.find(:first, :conditions => ["login = ?", current_user.login])
+    wrong_no_call.user_id = logged_in_user.id
+
+    wrong_no_call.save
+
+    redirect_to :action => 'new'
+  end
 end
 
 
@@ -379,6 +380,30 @@ module CallHelper
                                          :id, :to_label)
     innerHTML << "</div>"
 
+    innerHTML << "</div>"
+    innerHTML 
+  end
+
+  def type_of_call_form_column(record, input_name)
+
+    innerHTML = String.new
+    innerHTML << "<div style=\"\">"
+
+    # The main category list, cicking on this populates the sub-category list
+    innerHTML << "<div style=\"width:230px; float:left\">"
+    innerHTML << CY_select_collection("toc_categories", TypeOfCall.getCategories, {}, :to_s, :to_s, 1, '230px')
+
+    innerHTML << observe_field(:toc_categories, :url => { :action => :update_toc_subcategory_list },
+               :update => "#{input_name}[sub]",
+               :with => 'toc_categories')
+    innerHTML << "</div>"
+      
+    # This is empty until a category is clicked, this is then updated 
+    # via an AJAX update from the controller
+    innerHTML << "<div id=\"#{input_name}[sub]\" style=\"width:300px; float:left\">"
+    innerHTML << CY_select_collection("type_of_call", record.type_of_call, record.type_of_call, :id, :to_label, 1, '300px')
+    innerHTML << "</div>"
+    
     innerHTML << "</div>"
     innerHTML 
   end
