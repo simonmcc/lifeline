@@ -1,19 +1,26 @@
 <%= javascript_include_tag :defaults %>
 <% if @_params['action'] == 'new'  -%>
 <div id="quick_close_links" style="float:right; width:300px;">
-    <%= link_to( "Hang Up",  :action => :hang_up ) %>
-    <%= link_to( "Silence", :action => :silence ) %>
-    <%= link_to( "Wrong Number", :action => :wrong_no ) %>
-</div>
-<% end -%>
-
+    <%= link_to( "Hang Up",  :action => :hang_up ) %> |
+    <%= link_to( "Silence", :action => :silence ) %> |
+    <%= link_to( "Wrong Number", :action => :wrong_no ) %> |
+  </div>
+  
+  <% end -%>
+  
 <ol class="form" <%= 'style="display: none;"' if columns.collapsed -%>>
   <li class="form-element ">
 	<dl>
 	<dt><label>Your are logged in as:</label></dt>
 	<dd><label><%= current_user.login -%></label></dd>
 	</dl>
-  </li>
+      
+        </li>
+        <!-- pop ip window for adding a new client while in call new -->
+        <div id="new_client_links" style="float:right; width:300px;">
+          <%= link_to 'Add a New Client', { :controller => 'client', :action => 'new' }, { :popup => true } %>
+        </div>
+
   <% columns.each :for => @record do |column| -%>
   <% if is_subsection? column -%>
   <li class="sub-section">
@@ -28,6 +35,8 @@
   <li class="form-element <%= 'required' if column.required? %>">
     <%= render :partial => form_partial_for_column(column), :locals => { :column => column } -%>
   </li>
+
+  
   <% end -%>
   <% end -%>
 </ol>

@@ -14,7 +14,7 @@ class CallController < ApplicationController
 			:created_at,
 			:usedlifelinebefore, 
 			:direct_call, 
-			# :caller_name, 
+			#:caller_name, 
 			:client,
 			:understoodconfidentiality, 
 			:contact_telephone,
@@ -25,9 +25,9 @@ class CallController < ApplicationController
 			:gender, 
 			:age,
 			:location_trust,
-            :location_town,
-            :location_postcode,
-            :presenting_issues,     # virtual field, part of habtm
+                        :location_town,
+                        :location_postcode,
+                        :presenting_issues,     # virtual field, part of habtm
 			:aware_of_services,
 			:type_of_call,
 			:furtheractionrequired,
@@ -37,11 +37,11 @@ class CallController < ApplicationController
 
     config.list.columns = [
 			:created_at,
-            :presenting_issues,     # virtual field, part of habtm
-            :user, 
+                        :presenting_issues,     # virtual field, part of habtm
+                        :user, 
 			:length_of_call,
-            :type_of_call,
-            :direct_call,
+                        :type_of_call,
+                        :direct_call,
 			:client
 			]
 
@@ -105,7 +105,7 @@ class CallController < ApplicationController
     config.columns[:aware_of_services].label = 'Is the caller aware of the services offered by LIFELINE?'
     config.columns[:aware_of_services].form_ui = :select
 
-    config.columns[:type_of_call].label = 'Identify the Type of Call IN'
+    config.columns[:type_of_call].label = 'Identify the Type of Call In'
 
     config.columns[:furtheractionrequired].label = 'Did the assistance provided adequately address the need of the caller identified when ringing in?'
 
@@ -212,6 +212,33 @@ class CallController < ApplicationController
 
     redirect_to :action => 'new'
   end
+  
+
+  #def new_client_from_call
+  #  new_client_from_call = Call.new
+  #  new_client_from_call.usedlifelinebefore =Usedlifelinebefore.find(:first, :conditions => ["category = ?", 'Yes(known caller)'])
+  #  logged_in_user =  User.find(:first, :conditions => ["login = ?", current_user.login])
+  #  new_client_from_call.user_id = logged_in_user.id
+#
+#    new_client_from_call.save
+#
+#    redirect_to :action =>'new'
+#  end
+
+
+ #def save
+ #      save_call = Call.save
+ #      save_call.type_of_call = TypeOfCall.find(:first, :conditions => ["category = ?", 'Hang Up'])
+ #      # Get the user_id from the logged in user (current_user.login)
+ #      logged_in_user =  User.find(:first, :conditions => ["login = ?", current_user.login])
+#       hangup_call.user_id = logged_in_user.id
+#  
+ #      hangup_call.save
+ #      
+ #      redirect_to :action => 'new'
+# end
+          
+
 end
 
 

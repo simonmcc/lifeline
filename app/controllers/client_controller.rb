@@ -64,6 +64,8 @@ class ClientController < ApplicationController
     config.columns[:fr_sname].label = "Friend/Refer Surname"
 
     config.columns[:gender].form_ui = :select
+    
+    config.columns[:dob].form_ui = :select
 
     config.columns[:notes].form_ui = :textarea
     config.columns[:notes].options = {:rows => 10, :cols => 60}
