@@ -19,7 +19,7 @@ class ClientController < ApplicationController
                         :fr_sname,
                         :fr_number,
                         :gender,
-                        :dob,
+			:dob,
                         :understoodconfidentiality,
                         :rf_fname,
                         :rf_sname,
@@ -65,8 +65,7 @@ class ClientController < ApplicationController
 
     config.columns[:gender].form_ui = :select
     
-    config.columns[:dob].form_ui = :select
-
+    
     config.columns[:notes].form_ui = :textarea
     config.columns[:notes].options = {:rows => 10, :cols => 60}
 
@@ -76,5 +75,6 @@ class ClientController < ApplicationController
     #config.columns[:full_assessment].form_ui = :select
 
   end
-
 end
+
+
