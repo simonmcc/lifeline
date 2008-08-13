@@ -6,7 +6,7 @@ class CreateAllocationServices < ActiveRecord::Migration
     end
 
     AllocationService.create(:service_text => "CHILL Eastern")
-    AllocationService.create(:service_text => "CHILL Western")
+    AllocationService.create(:service_text => "CHILL Southern")
     AllocationService.create(:service_text => "Northern Board")
     AllocationService.create(:service_text => "Clinical Placements")
     AllocationService.create(:service_text => "Schools Programme")
