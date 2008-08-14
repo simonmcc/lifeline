@@ -51,7 +51,7 @@ class RiskAssessmentController < ApplicationController
 
   # method to populate the type down model_auto_completer
   def auto_complete_belongs_to_for_record_client_id
-    auto_param = params[:client][:id]
+    auto_param = params[:record][:client][:text]
     @results = Client.find(:all,
                            :conditions => ["LOWER(fname) LIKE ?", "%#{auto_param.downcase}%"],
                            :limit => 10
