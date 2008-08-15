@@ -1,4 +1,6 @@
 class CallOutController < ApplicationController
+  
+  include ApplicationHelper
   layout 'application'
 
   # Protect this controller, login required
@@ -20,6 +22,7 @@ class CallOutController < ApplicationController
     # Don't do the sub-form thing on create, just pick from existing entries
     config.columns[:client].form_ui = :auto_complete
 
+    config.columns[:call_outcome].label = " Was Action fully completed?"
     config.columns[:call_outcome].form_ui = :select
     config.columns[:call_out_type].form_ui = :select
 

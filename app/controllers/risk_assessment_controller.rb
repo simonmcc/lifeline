@@ -22,7 +22,6 @@ class RiskAssessmentController < ApplicationController
     config.list.columns = [
                       :client,
                       :created_at,
-                      :user,
                       :risk_assessment_type,
                       :risk_assessment_outcome,
                       :clinical_consultation_required,
@@ -35,12 +34,14 @@ class RiskAssessmentController < ApplicationController
     config.columns[:risk_assessment_type].label = "Risk Assessment Type"
     config.columns[:risk_assessment_type].form_ui = :select
 
-    config.columns[:risk_assessment_outcome].label = "Risk Assessment Outcome"
+    config.columns[:risk_assessment_outcome].label = "Has risk been fully assessed?"
     config.columns[:risk_assessment_outcome].form_ui = :select
 
     config.columns[:safety_contract].label = "Was risk management/safety contract agreed?"
     config.columns[:safety_contract].form_ui = :select
-
+    
+    config.columns[:clinical_consultation_required].label = "Was clinical consulation required?"
+    
     config.columns[:followup_service].label = "Has a follow up service been identified?"
     config.columns[:followup_service].form_ui = :select
  
@@ -75,5 +76,26 @@ module RiskAssessmentHelper
     # although form_ui = auto_complete, we want to play around abit
     # and generate the html ourselves...
     belongs_to_auto_completer :record, :client, :id, options
+  
+  
+  
   end
+
+
+
+  #def clinical_consultation_required_form_column(record, input_name)
+  #  select("record", "clinical_consulation_required", [['Yes', true ],
+  #                                                     ['No ',  false ]],
+  #    { :selected => @record.clinical_consulation_required, :prompt => true  })
+  #end
+
+  #def clinical_consultation_required(record)
+  #  if record.clinical_consultation_required
+  #    "Yes"
+  #  else
+  #    "No" 
+  #  end
+  
+  #end
+
 end

@@ -294,6 +294,7 @@ module CallHelper
     select_id = @record.usedlifelinebefore
 
     select("record", "usedlifelinebefore",
+           
                 [['Yes (Known Caller)', true ], ['No (New Caller)', false]],
 		{ :selected => select_id, :prompt => true })
   end  
