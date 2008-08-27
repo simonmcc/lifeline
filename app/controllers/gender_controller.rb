@@ -1,7 +1,7 @@
-class GenderController < ApplicationController
+class GenderController < AuthenticatedApplicationController
   # Protect this controller, login required
-  include AuthenticatedSystem
-  before_filter :login_required
+  #include AuthenticatedSystem
+  #before_filter :login_required
 
   active_scaffold
 

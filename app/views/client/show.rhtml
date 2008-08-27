@@ -2,16 +2,16 @@
   <div class="show-view view">
     <%= render :partial => 'show' -%>
     <div>
-      <%= render :active_scaffold => 'call', :conditions => ['client_id = ?', @client.object_id] %>
+      <%= render :active_scaffold => 'call', :conditions => ['client_id = ?', @client.id] %>
     </div>
     <div>
-      <%= render :active_scaffold => 'call_out', :conditions => ['client_id = ?', @client.object_id] %>
+      <%= render :active_scaffold => 'call_out', :conditions => ['client_id = ?', @client._id] %>
     </div>
     <div>
-      <%= render :active_scaffold => 'risk_assessment', :conditions => ['client_id = ?', @client.object_id] %>
+      <%= render :active_scaffold => 'risk_assessment', :conditions => ['client_id = ?', @client.id] %>
     </div>
     <div>
-      <%= render :active_scaffold => 'allocation', :conditions => ['client_id = ?', @client.object_id] %>
+      <%= render :active_scaffold => 'allocation', :conditions => ['client_id = ?', @client.id] %>
     </div>
   </div>
 </div>

@@ -2,6 +2,7 @@ class AccountController < ApplicationController
 
   # Be sure to include AuthenticationSystem in Application Controller instead
   include AuthenticatedSystem
+layout "anonymous"
   # If you want "remember me" functionality, add this before_filter to Application Controller
   before_filter :login_from_cookie
 
@@ -39,7 +40,7 @@ class AccountController < ApplicationController
     cookies.delete :auth_token
     reset_session
     flash[:notice] = "You have been logged out."
-    redirect_back_or_default(:controller => '/account', :action => 'index')
+    redirect_to(:'/')
   end
   
 end

@@ -1,11 +1,11 @@
-class CallController < ApplicationController
+class CallController < AuthenticatedApplicationController
 
-  include ApplicationHelper
-  layout 'application'
+#  include ApplicationHelper
+ # layout 'application'
 
   # Protect this controller, login required
-  include AuthenticatedSystem
-  before_filter :login_required
+ # include AuthenticatedSystem
+ # before_filter :login_required
 
 
   active_scaffold :call do |config|
@@ -61,6 +61,8 @@ class CallController < ApplicationController
 
     config.columns[:client].form_ui = :auto_complete
     config.columns[:client].label = "Client ID"
+    config.columns[:client].inplace_edit = false
+    config.columns[:client].options = { :popup => 'true' }
 
     config.columns[:usedlifelinebefore].label = "Has the caller used LIFELINE before?"
 
@@ -142,7 +144,7 @@ class CallController < ApplicationController
   def auto_complete_belongs_to_for_record_client_id
     auto_param = params[:record][:client][:text]
     @results = Client.find(:all,
-                           :conditions => ["LOWER(fname) LIKE ?", "%#{auto_param.downcase}%"],
+                           :conditions => ["LOWER(fname) LIKE ? OR LOWER(sname) LIKE ?", "%#{auto_param.downcase}%", "%#{auto_param.downcase}%"],
                            :limit => 10
                 )
     render :inline => '<%= model_auto_completer_result(@results, :fname) %>'
@@ -450,6 +452,26 @@ module CallHelper
     # and generate the html ourselves...
     belongs_to_auto_completer :record, :client, :id, options
   end
+  
+  # Override the form_ui so that we can prepopulate this field
+  def location_town_form_column(record, input_name)
+    if !self.params_for['location_town_id'].nil?
+      # We have defaults to populate from :-)
+      location_town = Location_town.find(self.params_for['location_town_id'])
+      options = {:hf_value => location_town.id, :tf_value => location_town.to_label }
+    else
+      options = {}
+    end
+
+    # although form_ui = auto_complete, we want to play around abit
+    # and generate the html ourselves...
+    belongs_to_auto_completer :record, :location_town, :id, options
+  end
+
+  def created_at_column(record)
+    record.created_at.strftime("%d-%b-%y&nbsp;%H:%M")
+  end
+
 
   def direct_call_column(record)
     record.direct_call ?  "Direct" : "Concern for others"

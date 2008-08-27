@@ -1,11 +1,11 @@
-class CallOutController < ApplicationController
+class CallOutController < AuthenticatedApplicationController
   
-  include ApplicationHelper
-  layout 'application'
+  #include ApplicationHelper
+  #layout 'application'
 
   # Protect this controller, login required
-  include AuthenticatedSystem
-  before_filter :login_required
+  #include AuthenticatedSystem
+  #before_filter :login_required
 
   # Configure ActiveScaffold
   active_scaffold :call_out do |config|

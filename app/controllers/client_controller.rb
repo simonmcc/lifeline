@@ -1,4 +1,4 @@
-class ClientController < ApplicationController
+class ClientController < AuthenticatedApplicationController
   layout 'application'
   
   # Protect this controller, login required
@@ -75,6 +75,18 @@ class ClientController < ApplicationController
     #config.columns[:full_assessment].form_ui = :select
 
   end
+
+  def show
+    @client = client_from_params()
+    return redirect(:action=>'index') if @client.nil?
+  end
+
+  def client_from_params(param_name = :id)
+    client_id = ((params[param_name] || ' ').gsub(/\D/, ''))
+    client = Client.find(client_id) if client_id[/^\d{1,6}/]
+    return client
+  end
+
 end
 
 

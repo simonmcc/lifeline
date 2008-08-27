@@ -1,10 +1,10 @@
-class AllocationController < ApplicationController
+class AllocationController < AuthenticatedApplicationController
 
-  layout 'application'
+ # layout 'application'
 
   # Protect this controller, login required
-  include AuthenticatedSystem
-  before_filter :login_required
+ # include AuthenticatedSystem
+ # before_filter :login_required
 
   active_scaffold :allocation do |config|
     # Apply some order

@@ -1,9 +1,9 @@
-class RiskAssessmentController < ApplicationController
-  layout 'application'
+class RiskAssessmentController < AuthenticatedApplicationController
+#  layout 'application'
 
   # Protect this controller, login required
-  include AuthenticatedSystem
-  before_filter :login_required
+ # include AuthenticatedSystem
+ # before_filter :login_required
   
   active_scaffold :risk_assessment do |config|
 
