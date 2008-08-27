@@ -38,8 +38,10 @@ Rails::Initializer.run do |config|
   # no regular words or you'll be exposed to dictionary attacks.
   config.action_controller.session = {
     :session_key => '_lifeline_session',
-    :secret      => '4d46762235a73444382e02b9930e24dc2ae66e5128bb83adc14220585d906bf5aecd6ad1324b99172d686be2650a719ad3242e999474217e54579d64a9f58716'
+     :secret      => '5fc06272eac69138b9431453c9efb30f805d0be8cb4a77b16c6a587959d486063fd308ac57712fa1f8460e02660bc1a1324312e81dd2f7c0573d668699fbede9'
+
   }
+  config.action_controller.allow_forgery_protection = false
 
   # Use the database for sessions instead of the cookie-based default,
   # which shouldn't be used to store highly confidential information
