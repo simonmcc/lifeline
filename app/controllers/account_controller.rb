@@ -40,7 +40,7 @@ layout "anonymous"
     cookies.delete :auth_token
     reset_session
     flash[:notice] = "You have been logged out."
-    redirect_to(:'/')
+    redirect_to('/')
   end
   
 end
