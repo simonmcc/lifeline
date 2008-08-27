@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Contact Youth LIFELINE</title>
+  <meta name="description" content="Contact Youth LIFELINE"/>
+  <meta name="keywords" content="" />
+  <meta name="robots" content="noindex"/>
+  <%= javascript_include_tag :defaults %>
+  <%= active_scaffold_includes %>
+  <link href="/stylesheets/style.css" rel="stylesheet" type="text/css"/>
+ </head>
+
+ <body>
+<table border="0" align="center" cellpadding="0" cellspacing="0" class="table-corners-simple">
+  <tr>
+    <td class="corner1">&nbsp;</td>
+    <td class="bg-white">&nbsp;</td>
+    <td class="corner2">&nbsp;</td>
+  </tr>
+  <tr>
+    <td class="bg-white">&nbsp;</td>
+    <td><table border="0" align="center" cellpadding="0" cellspacing="0" class="main-table">
+      <tr>
+        <td colspan="2" class="top-img-simple"><p><br />
+              <span class="website-title">Contact Youth Lifeline </span><br />
+          </p>
+          </td>
+      </tr>
+      <tr>
+        <td colspan="2" class="menu">
+<%= link_to 'View Calls In', { :controller => 'call', :action => 'index'}, {:class=>'menu-link'} %>
+<%= link_to 'View Calls Out', { :controller => 'call_out', :action => 'index'}, {:class=>'menu-link'} %>
+<%= link_to 'View Clients', { :controller => 'client', :action => 'index'}, {:class=>'menu-link'} %>
+<%= link_to 'View Risk Assessments', { :controller => 'risk_assessment', :action => 'index'}, {:class=>'menu-link'} %>
+<%= link_to 'View Allocations', { :controller => 'allocation', :action => 'index'}, {:class=>'menu-link'} %>
+<%= link_to 'Logout', { :controller => 'account', :action => 'logout' }, {:class=>'menu-link'} %>
+      </tr>
+      <tr>
+        <td class="content"><%= yield %></td>
+        <td width="200" class="content-right">
+
+<p><strong>New...</strong></p>
+<%= link_to 'Client', {:controller => 'client', :action => 'new'}, {:class=>'menu-right'} %>
+<%= link_to 'Call In', {:controller => 'call', :action => 'new'}, {:class=>'menu-right'} %>
+<%= link_to 'Call Out', { :controller => 'call_out', :action => 'new'}, {:class=>'menu-right'} %>
+<%= link_to 'Risk Assessment', {:controller => 'risk_assessment', :action => 'new'}, {:class=>'menu-right'} %>
+<%= link_to 'Allocate Service', { :controller => 'allocation', :action => 'new'}, {:class=>'menu-right'} %>
+
+<% if @client %>
+<br /><br />
+<p><strong>For <%= @client.sname %>, <%= @client.fname %></strong></p>
+<%= link_to 'New Call In', {:controller => 'call', :action => 'new', :client_id=>@client.id}, {:class=>'menu-right'} %>
+<%= link_to 'New Call Out', { :controller => 'call_out', :action => 'new', :client_id=>@client.id}, {:class=>'menu-right'} %>
+<%= link_to 'New Risk Assessment', {:controller => 'risk_assessment', :action => 'new', :client_id=>@client.id}, {:class=>'menu-right'} %>
+<%= link_to 'Allocate New Service', { :controller => 'allocation', :action => 'new', :client_id=>@client.id}, {:class=>'menu-right'} %>
+<% end %>
+
+</td>
+</tr>
+      <tr>
+        <td colspan="2"><span class="made-in_text">Site by <a class="made-in" title="Stirk Lamont Ltd" href="http://www.sla-ltd.com/">SLA Ltd</a> | Graphic based on design by <a class="made-in" title="Interneto svetainių kūrimas" href="http://www.roman.lt/">Svetainių kūrimas</a></span></td>
+      </tr>
+    </table></td>
+    <td class="bg-white">&nbsp;</td>
+  </tr>
+  <tr>
+    <td class="corner3">&nbsp;</td>
+    <td class="bg-white">&nbsp;</td>
+    <td class="corner4">&nbsp;</td>
+  </tr>
+</table>
+<p class="style1">&nbsp;</p>
+</body>
+</html>
