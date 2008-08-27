@@ -41,7 +41,7 @@ class AllocationController < AuthenticatedApplicationController
     #end
 
     
-    config.columns[:num_of_intervention_session].label = "Please enter the number of intervention sessions"
+    config.columns[:num_of_intervention_session].label = "Number of intervention sessions completed"
     
     config.columns[:date_intervention_ended].label = "Enter date intervention ended"
 

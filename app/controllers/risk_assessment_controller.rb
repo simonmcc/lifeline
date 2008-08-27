@@ -46,7 +46,9 @@ class RiskAssessmentController < AuthenticatedApplicationController
     config.columns[:followup_service].form_ui = :select
  
     config.columns[:risk_assessment_note].label = "Any addition notes for risk assessment?"
-  
+    config.columns[:risk_assessment_note].form_ui = :textarea
+    config.columns[:risk_assessment_note].options = { :cols => 60, :rows => 20}
+
   
   end
 
