@@ -1,5 +1,5 @@
 <%= javascript_include_tag :defaults %>
-<% if @_params['action'] == 'new'  -%>
+<% if params['action'] == 'new'  -%>
 <div id="quick_close_links" style="float:right; width:300px;">
     <%= link_to( "Hang Up",  :action => :hang_up ) %> |
     <%= link_to( "Silence", :action => :silence ) %> |

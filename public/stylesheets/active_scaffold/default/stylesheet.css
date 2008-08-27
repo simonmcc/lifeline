@@ -583,19 +583,18 @@ padding-top: 2px;
 }
 
 .active-scaffold label {
-font: normal 14px verdana, sans-serif;
+font: normal 11px verdana, sans-serif;
 color: #555;
 }
 
 .active-scaffold li.form-element dt {
 float: left;
-width: 24em;
+width: 12em;
 padding: 6px 0;
 }
 
 .active-scaffold li.form-element dd {
 float: left;
-padding: 6px 0;
 }
 
 .active-scaffold .description {
