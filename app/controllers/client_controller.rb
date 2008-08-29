@@ -1,9 +1,9 @@
 class ClientController < AuthenticatedApplicationController
-  layout 'application'
+#  layout 'application'
   
   # Protect this controller, login required
-  include AuthenticatedSystem
-  before_filter :login_required
+ # include AuthenticatedSystem
+ # before_filter :login_required
 
   active_scaffold :clients do |config|
 
@@ -62,6 +62,7 @@ class ClientController < AuthenticatedApplicationController
 
     config.columns[:fr_fname].label = "Friend/Refer Forename"
     config.columns[:fr_sname].label = "Friend/Refer Surname"
+    config.columns[:fr_number].label = "Friend/Refer Phone Number "
 
     config.columns[:gender].form_ui = :select
     
@@ -70,11 +71,19 @@ class ClientController < AuthenticatedApplicationController
     config.columns[:notes].options = {:rows => 10, :cols => 60}
 
     config.columns[:understoodconfidentiality].form_ui = :checkbox
+    
+    config.columns[:rf_fname].label = "Friend/Refer Forename"
+    config.columns[:rf_sname].label = "Friend/Refer Surname"
+    config.columns[:rf_number].label = "Friend/Refer Phone Number "
+    config.columns[:rf_designation].label = "Friend/Refer Designation"
+    config.columns[:rf_address].label = "Friend/Refer Address"
+    config.columns[:rf_town].label = "Friend/Refer Town"
+    config.columns[:rf_post_code].label = "Friend/Refer Postcode"
 
     #config.columns[:full_assessment].label = "Was a full assessment completed?"
     #config.columns[:full_assessment].form_ui = :select
-
   end
+
 
   def show
     @client = client_from_params()
