@@ -85,21 +85,21 @@ class CallController < AuthenticatedApplicationController
     config.columns[:referal_source].label = 'How did the caller find out about the LIFELINE services?'
     config.columns[:referal_source].form_ui = :select
 
-    config.columns[:gender].label = 'What gender is the caller (or person the caller is concerned about)?'
+    config.columns[:gender].label = 'What gender is the client?'
     config.columns[:gender].form_ui = :select
 
-    config.columns[:age].label = 'What age is the caller (or person the caller is concerned about)?'
+    config.columns[:age].label = 'What age is the client?'
 
     config.columns[:location_trust].label ='Where in the country is the caller (or person the caller is concerned about) ringing from (i.e. area)?'
     config.columns[:location_trust].form_ui = :select
     
-    config.columns[:location_town].label ='Where is the caller (or person the caller is concerned about) ringing from (i.e. nearest town)?'
+    config.columns[:location_town].label ='Location of client?'
     config.columns[:location_town].form_ui = :auto_complete
 
-    config.columns[:location_postcode].label ='What is the postcode the caller (or person the caller is concerned about) ringing from?'
+    config.columns[:location_postcode].label ='Clients Postcode?'
     config.columns[:location_postcode].form_ui = :select
 
-    config.columns[:presenting_issues].label = 'What issues is the caller (or person the caller is concerned about) presenting with?'
+    config.columns[:presenting_issues].label = 'Presenting Issues?'
     # disable the create/edit fucntionality for the presenting issues
     # this displays a set of checkboxes for selecting issues
     config.columns[:presenting_issues].form_ui = :select
