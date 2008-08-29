@@ -15,9 +15,6 @@ class ClientController < AuthenticatedApplicationController
                         :town,
                         :post_code,
                         :landline,
-                        :fr_fname,
-                        :fr_sname,
-                        :fr_number,
                         :gender,
 			:dob,
                         :understoodconfidentiality,
@@ -43,9 +40,9 @@ class ClientController < AuthenticatedApplicationController
                               :post_code,
                               :mobile,
                               :landline,
-                              :fr_fname,
-                              :fr_sname,
-                              :fr_number,
+                              :rf_fname,
+                              :rf_sname,
+                              :rf_number,
                               :gender,
                               :notes
                              ]
@@ -60,12 +57,7 @@ class ClientController < AuthenticatedApplicationController
     config.columns[:fname].label = "Forename"
     config.columns[:sname].label = "Surname"
 
-    config.columns[:fr_fname].label = "Friend/Refer Forename"
-    config.columns[:fr_sname].label = "Friend/Refer Surname"
-    config.columns[:fr_number].label = "Friend/Refer Phone Number "
-
     config.columns[:gender].form_ui = :select
-    
     
     config.columns[:notes].form_ui = :textarea
     config.columns[:notes].options = {:rows => 10, :cols => 60}
