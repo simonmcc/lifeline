@@ -32,8 +32,9 @@ class CallController < AuthenticatedApplicationController
 			:type_of_call,
 			:furtheractionrequired,
 			:caller_satisfaction,
-			:length_of_call
-			]
+			:length_of_call,
+                        :call_in_summary  			
+    ]
 
     config.list.columns = [
 			:created_at,
@@ -108,6 +109,7 @@ class CallController < AuthenticatedApplicationController
     config.columns[:aware_of_services].form_ui = :select
 
     config.columns[:type_of_call].label = 'Identify the Type of Call In'
+    config.columns[:type_of_call].form_ui = :select
 
     config.columns[:furtheractionrequired].label = 'Did the assistance provided adequately address the need of the caller identified when ringing in?'
 
@@ -117,7 +119,10 @@ class CallController < AuthenticatedApplicationController
     config.columns[:length_of_call].label = 'Length of Call'
     config.columns[:length_of_call].form_ui = :select
     
-    
+    config.columns[:call_in_summary].label = 'Summary of Call'
+    config.columns[:call_in_summary].form_ui = :textarea
+    config.columns[:call_in_summary].options = { :cols => 60, :rows => 20}
+
     # This is set using the before_create_save method, instead of configurable on create
     config.create.columns.exclude :user
   end
@@ -172,9 +177,9 @@ class CallController < AuthenticatedApplicationController
                                             size=5, "240px")
   end
   
-  def update_toc_subcategory_list
-    render :text => CY_select_collection("type_of_call", TypeOfCall.find(:all, :conditions => ["category = ?", params[:toc_categories]]), {}, :id, :to_label, 1, '300px')
-  end
+  #def update_toc_subcategory_list
+  #  render :text => CY_select_collection("type_of_call", TypeOfCall.find(:all, :conditions => ["category = ?", params[:toc_categories]]), {}, :id, :to_label, 1, '300px')
+  #end
 
   def hang_up 
     hangup_call = Call.new 
@@ -414,29 +419,29 @@ module CallHelper
     innerHTML 
   end
 
-  def type_of_call_form_column(record, input_name)
+#  def type_of_call_form_column(record, input_name)
 
-    innerHTML = String.new
-    innerHTML << "<div style=\"\">"
+    #innerHTML = String.new
+    #innerHTML << "<div style=\"\">"
 
     # The main category list, cicking on this populates the sub-category list
-    innerHTML << "<div style=\"width:230px; float:left\">"
-    innerHTML << CY_select_collection("toc_categories", TypeOfCall.getCategories, {}, :to_s, :to_s, 1, '230px')
+    #innerHTML << "<div style=\"width:230px; float:left\">"
+    #innerHTML << CY_select_collection("toc_categories", TypeOfCall.getCategories, {}, :to_s, :to_s, 1, '230px')
 
-    innerHTML << observe_field(:toc_categories, :url => { :action => :update_toc_subcategory_list },
-               :update => "#{input_name}[sub]",
-               :with => 'toc_categories')
-    innerHTML << "</div>"
+    #innerHTML << observe_field(:toc_categories, :url => { :action => :update_toc_subcategory_list },
+    #           :update => "#{input_name}[sub]",
+    #           :with => 'toc_categories')
+    #innerHTML << "</div>"
       
     # This is empty until a category is clicked, this is then updated 
     # via an AJAX update from the controller
-    innerHTML << "<div id=\"#{input_name}[sub]\" style=\"width:300px; float:left\">"
-    innerHTML << CY_select_collection("type_of_call", record.type_of_call, record.type_of_call, :id, :to_label, 1, '300px')
-    innerHTML << "</div>"
+    #innerHTML << "<div id=\"#{input_name}[sub]\" style=\"width:300px; float:left\">"
+    #innerHTML << CY_select_collection("type_of_call", record.type_of_call, record.type_of_call, :id, :to_label, 1, '300px')
+    #innerHTML << "</div>"
     
-    innerHTML << "</div>"
-    innerHTML 
-  end
+    #innerHTML << "</div>"
+    #innerHTML 
+ # end
 
   # Override the form_ui so that we can prepopulate this field
   def client_form_column(record, input_name)

@@ -7,7 +7,9 @@ class ClientController < AuthenticatedApplicationController
 
   active_scaffold :clients do |config|
 
-    config.columns =  [:fname,
+    config.columns =  [:project_id,
+                        :lifeline_id,
+                        :fname,
                         :sname,
                         :mobile,
                         :notes,
@@ -33,7 +35,9 @@ class ClientController < AuthenticatedApplicationController
                             :notes
                            ]
 
-    config.update.columns =  [:fname,
+    config.update.columns =  [:project_id,
+                              :lifeline_id,
+                              :fname,
                               :sname,
                               :address,
                               :town,

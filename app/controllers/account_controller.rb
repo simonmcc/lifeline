@@ -19,7 +19,7 @@ layout "anonymous"
         self.current_user.remember_me
         cookies[:auth_token] = { :value => self.current_user.remember_token , :expires => self.current_user.remember_token_expires_at }
       end
-      redirect_back_or_default(:controller => '/account', :action => 'index')
+      redirect_back_or_default(:controller => '/call', :action => 'new')
       flash[:notice] = "Logged in successfully"
     end
   end
@@ -29,7 +29,7 @@ layout "anonymous"
     return unless request.post?
     @user.save!
     self.current_user = @user
-    redirect_back_or_default(:controller => '/account', :action => 'index')
+    redirect_back_or_default(:controller => '/call', :action => 'new')
     flash[:notice] = "Thanks for signing up!"
   rescue ActiveRecord::RecordInvalid
     render :action => 'signup'
