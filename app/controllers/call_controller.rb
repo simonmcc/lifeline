@@ -256,7 +256,8 @@ module CallHelper
 
   def direct_call_form_column(record, input_name)
       select("record", "direct_call", [ ['Direct', true ], ['Concern for others', false]],
-                                             { :selected => @record.direct_call, :prompt => true  })
+                                             { :selected => @record.direct_call, :selected => nil, :prompt => true  })
+      
   end
   
   def direct_call_column(record)
@@ -303,11 +304,21 @@ module CallHelper
     select("record", "usedlifelinebefore",
            
                 [['Yes (Known Caller)', true ], ['No (New Caller)', false]],
-		{ :selected => select_id, :prompt => true })
+		{ :selected => select_id, :selected => nil, :prompt => true })
   end  
+ # def usedlifelinebefore_column(record)
+ #     if record.usedlifelinebefore
+ #     "Yes (Known Caller)"
+ #   else
+ #     "No (New Caller)"
+ #   end
+    
+ # end
   
   def usedlifelinebefore_column(record)
-    if record.usedlifelinebefore
+    if record.nil?
+      "-"
+      elsif record.usedlifelinebefore
       "Yes (Known Caller)"
     else
       "No (New Caller)"
@@ -319,13 +330,13 @@ module CallHelper
     select :record, :furtheractionrequired, 
 		[['Yes - no further action required', false],
 	         ['No - action required recorded', true]],
-		{ :prompt => true, :selected => @record.furtheractionrequired }
+		{:selected => @record.furtheractionrequired, :selected => nil, :prompt => true }
   end
   
   def emergency_form_column(record, input_name)
     select("record", "emergency", [['Yes - move to immediate risk assess the situation', true ],
                                    ['No - continue',  false ]],
-                                { :selected => @record.emergency, :prompt => true  })
+                                { :selected => @record.emergency, :selected => nil, :prompt => true  })
   end
 
     def emergency_column(record)
@@ -340,7 +351,7 @@ module CallHelper
   def oktoidentify_form_column(record, input_name)
     select("record", "oktoidentify", [['Yes', true ],
                                    ['No - do not identify the service when ringing', false]],
-                                { :selected => @record.oktoidentify, :prompt => true  })
+                                { :selected => @record.oktoidentify, :selected => nil, :prompt => true  })
   end
   
   def oktoidentify_column(record)
@@ -354,7 +365,7 @@ module CallHelper
 
   def throughfirstcall_form_column(record, input_name)
     select("record", "throughfirstcall", [ ['Yes', true ], ['No - (Call waiting/engaged)', false]],
-                                { :selected => @record.throughfirstcall, :prompt => true  })
+                                { :selected => @record.throughfirstcall, :selected => nil, :prompt => true  })
   end
   
   def throughfirstcall_column(record)
@@ -478,9 +489,9 @@ module CallHelper
   end
 
 
-  def direct_call_column(record)
-    record.direct_call ?  "Direct" : "Concern for others"
-  end
+#  def direct_call_column(record)
+ #   record.direct_call ?  "Direct" : "Concern for others"
+ # end
 
   def emergency_column(record)
     if record.emergency
