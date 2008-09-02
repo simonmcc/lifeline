@@ -42,7 +42,6 @@ class CallController < AuthenticatedApplicationController
                         :user, 
 			:length_of_call,
                         :type_of_call,
-                        :direct_call,
 			:client
 			]
 
