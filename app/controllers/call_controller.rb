@@ -42,7 +42,8 @@ class CallController < AuthenticatedApplicationController
                         :user, 
 			:length_of_call,
                         :type_of_call,
-			:client
+			:call_in_summary,
+                        :client
 			]
 
     #config.actions.exclude :show
