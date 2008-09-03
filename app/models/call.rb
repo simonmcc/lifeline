@@ -10,7 +10,9 @@ class Call < ActiveRecord::Base
   belongs_to  :type_of_call
   belongs_to  :length_of_call
   belongs_to  :caller_satisfaction
-  
+ belongs_to   :call_in_type
+ belongs_to   :call_in_type_sub
+
   has_and_belongs_to_many :presenting_issues
 
   def to_label

@@ -29,8 +29,9 @@ class CallController < AuthenticatedApplicationController
                         :location_postcode,
                         :presenting_issues,     # virtual field, part of habtm
 			:aware_of_services,
-			:type_of_call,
-			:furtheractionrequired,
+                        :call_in_type,
+                        :call_in_type_sub,
+                        :furtheractionrequired,
 			:caller_satisfaction,
 			:length_of_call,
                         :call_in_summary  			
@@ -41,7 +42,7 @@ class CallController < AuthenticatedApplicationController
                         :presenting_issues,     # virtual field, part of habtm
                         :user, 
 			:length_of_call,
-                        :type_of_call,
+                        :call_in_type,
 			:call_in_summary,
                         :client
 			]
@@ -108,8 +109,13 @@ class CallController < AuthenticatedApplicationController
     config.columns[:aware_of_services].label = 'Is the caller aware of the services offered by LIFELINE?'
     config.columns[:aware_of_services].form_ui = :select
 
-    config.columns[:type_of_call].label = 'Identify the Type of Call In'
-    config.columns[:type_of_call].form_ui = :select
+    config.columns[:call_in_type].label = 'Identify the Type of Call In'
+    config.columns[:call_in_type].form_ui = :select
+
+    config.columns[:call_in_type_sub].label = 'Subcategory of the Type of Call In'
+    config.columns[:call_in_type_sub].form_ui = :select
+
+
 
     config.columns[:furtheractionrequired].label = 'Did the assistance provided adequately address the need of the caller identified when ringing in?'
 
@@ -288,6 +294,19 @@ module CallHelper
                           LocationPostcode.find(:all, :order => "id ASC").collect {|r| [r.postcode_text, r.id] },
                       {:selected => select_id, :prompt => true })
   end
+ def call_in_type_form_column(record, input_name)
+           select_id = @record.call_in_type
+
+       select("record", "call_in_type",
+          CallInType.find(:all, :order => "id ASC").collect {|r| [r.type_text, r.id] },
+                         {:selected => select_id, :prompt => true })
+                     end
+  def call_in_type_sub_form_column(record, input_name)
+       select_id = @record.call_in_type_sub
+        select("record", "call_in_type_sub",
+        CallInTypeSub.find(:all, :order => "id ASC").collect {|r| [r.sub_text, r.id] },
+                        {:selected => select_id, :prompt => true })
+      end
 
  def length_of_call_form_column(record, input_name)
         select_id = @record.length_of_call
@@ -296,7 +315,7 @@ module CallHelper
                           LengthOfCall.find(:all, :order => "id ASC").collect {|r| [r.duration_text, r.id] },
                       {:selected => select_id, :prompt => true })
  end
-
+ 
 
   def usedlifelinebefore_form_column(record, input_name)
     select_id = @record.usedlifelinebefore
