@@ -42,7 +42,7 @@ class CallController < AuthenticatedApplicationController
                         :presenting_issues,     # virtual field, part of habtm
                         :user, 
 			:length_of_call,
-                        :call_in_type,
+#                        :call_in_type,
 			:call_in_summary,
                         :client
 			]
@@ -129,6 +129,9 @@ class CallController < AuthenticatedApplicationController
     config.columns[:call_in_summary].form_ui = :textarea
     config.columns[:call_in_summary].options = { :cols => 60, :rows => 20}
 
+
+  # --USER-- #
+
     # This is set using the before_create_save method, instead of configurable on create
     config.create.columns.exclude :user
   end
@@ -148,6 +151,7 @@ class CallController < AuthenticatedApplicationController
 
   end
 
+  # -- CLIENT -- #
 
   # method to populate the type down model_auto_completer, but this should really
   # be done with the following doobery:
@@ -155,14 +159,14 @@ class CallController < AuthenticatedApplicationController
   def auto_complete_belongs_to_for_record_client_id
     auto_param = params[:record][:client][:text]
     @results = Client.find(:all,
-                           :conditions => ["LOWER(fname) LIKE ? OR LOWER(sname) LIKE ?", "%#{auto_param.downcase}%", "%#{auto_param.downcase}%"],
+                           :conditions => ["LOWER(fname) LIKE ?", "%#{auto_param.downcase}%"],
                            :limit => 10
                 )
     render :inline => '<%= model_auto_completer_result(@results, :fname) %>'
   end 
 
 
-
+  # -- TOWN LOCATION -- #
 
   # method to populate the type down model_auto_complete
   def auto_complete_belongs_to_for_record_location_town_id
@@ -173,6 +177,8 @@ class CallController < AuthenticatedApplicationController
                                 )
     render :inline => '<%= model_auto_completer_result(@results, :town_text) %>'
   end
+
+  # -- PRESENTING ISSUES -- #
 
   def update_subcategory_list
     render :text => multi_select_collection("sub-categories", 
@@ -187,9 +193,11 @@ class CallController < AuthenticatedApplicationController
   #  render :text => CY_select_collection("type_of_call", TypeOfCall.find(:all, :conditions => ["category = ?", params[:toc_categories]]), {}, :id, :to_label, 1, '300px')
   #end
 
+  # -- HANGUP --# 
+
   def hang_up 
     hangup_call = Call.new 
-    hangup_call.type_of_call = TypeOfCall.find(:first, :conditions => ["category = ?", 'Hang Up'])
+    hangup_call.call_in_type = CallInType.find(:first, :conditions => ["type_text = ?", 'Hang Up'])
 
     # Get the user_id from the logged in user (current_user.login)
     logged_in_user =  User.find(:first, :conditions => ["login = ?", current_user.login])
@@ -200,9 +208,11 @@ class CallController < AuthenticatedApplicationController
     redirect_to :action => 'new'
   end
 
+  # -- SILENCE -- #
+
   def silence 
     silence_call = Call.new
-    silence_call.type_of_call = TypeOfCall.find(:first, :conditions => ["category = ?", 'Silent Call'])
+    silence_call.call_in_type = CallInType.find(:first, :conditions => ["type_text = ?", 'Silent Call'])
 
     # Get the user_id from the logged in user (current_user.login)
     logged_in_user =  User.find(:first, :conditions => ["login = ?", current_user.login])
@@ -213,9 +223,11 @@ class CallController < AuthenticatedApplicationController
     redirect_to :action => 'new'
   end
 
+  # -- TESTING CALL -- #
+
   def wrong_no 
     wrong_no_call = Call.new
-    wrong_no_call.type_of_call = TypeOfCall.find(:first, :conditions => ["category = ?", 'Wrong Number'])
+    wrong_no_call.call_in_type = CallInType.find(:first, :conditions => ["type_text = ?", 'Testing Call'])
 
     # Get the user_id from the logged in user (current_user.login)
     logged_in_user =  User.find(:first, :conditions => ["login = ?", current_user.login])
@@ -259,65 +271,10 @@ end
 
 
 module CallHelper
-
-  def direct_call_form_column(record, input_name)
-      select("record", "direct_call", [ ['Direct', true ], ['Concern for others', false]],
-                                             { :selected => @record.direct_call, :selected => nil, :prompt => true  })
-      
-  end
   
-  def direct_call_column(record)
-    record.direct_call ? "Direct" : "Concern for others"
+  # -- USED LIFELINE BEFORE -- #
 
-  end
-
-  def referal_source_form_column(record, input_name)
-    select_id = @record.referal_source
-    
-    select("record", "referal_source",
-                     ReferalSource.find(:all, :order => "id ASC").collect {|r| [r.name, r.id] },
-		{ :selected => select_id, :prompt => true })
-  end
-
-  def location_trust_form_column(record, input_name)
-      select_id = @record.location_trust
-
-      select("record", "location_trust",
-                        LocationTrust.find(:all, :order => "id ASC").collect {|r| [r.name, r.id] },
-                        { :selected => select_id, :prompt => true })
-  end
-
-  def location_postcode_form_column(record, input_name)
-        select_id = @record.location_postcode
-
-        select("record", "location_postcode",
-                          LocationPostcode.find(:all, :order => "id ASC").collect {|r| [r.postcode_text, r.id] },
-                      {:selected => select_id, :prompt => true })
-  end
- def call_in_type_form_column(record, input_name)
-           select_id = @record.call_in_type
-
-       select("record", "call_in_type",
-          CallInType.find(:all, :order => "id ASC").collect {|r| [r.type_text, r.id] },
-                         {:selected => select_id, :prompt => true })
-                     end
-  def call_in_type_sub_form_column(record, input_name)
-       select_id = @record.call_in_type_sub
-        select("record", "call_in_type_sub",
-        CallInTypeSub.find(:all, :order => "id ASC").collect {|r| [r.sub_text, r.id] },
-                        {:selected => select_id, :prompt => true })
-      end
-
- def length_of_call_form_column(record, input_name)
-        select_id = @record.length_of_call
-
-        select("record", "length_of_call",
-                          LengthOfCall.find(:all, :order => "id ASC").collect {|r| [r.duration_text, r.id] },
-                      {:selected => select_id, :prompt => true })
- end
- 
-
-  def usedlifelinebefore_form_column(record, input_name)
+ def usedlifelinebefore_form_column(record, input_name)
     select_id = @record.usedlifelinebefore
 
     select("record", "usedlifelinebefore",
@@ -344,14 +301,23 @@ module CallHelper
     end
     
   end
+ 
 
-  def furtheractionrequired_form_column(record, input_name)
-    select :record, :furtheractionrequired, 
-		[['Yes - no further action required', false],
-	         ['No - action required recorded', true]],
-		{:selected => @record.furtheractionrequired, :selected => nil, :prompt => true }
+  # -- DIRECT CALL -- #
+
+  def direct_call_form_column(record, input_name)
+      select("record", "direct_call", [ ['Direct', true ], ['Concern for others', false]],
+                                             { :selected => @record.direct_call, :selected => nil, :prompt => true  })
+      
   end
   
+  def direct_call_column(record)
+    record.direct_call ? "Direct" : "Concern for others"
+
+  end
+    
+  # -- EMERGENCY -- #
+
   def emergency_form_column(record, input_name)
     select("record", "emergency", [['Yes - move to immediate risk assess the situation', true ],
                                    ['No - continue',  false ]],
@@ -364,8 +330,19 @@ module CallHelper
     else
       "No-continue"
     end
+  
+   # def emergency_column(record)
+   # if record.emergency
+   #   "Yes"
+   # else
+   #   "No"
+   # end
+ # end
+
     
   end
+
+  # -- OK TO IDENTIFY -- #
 
   def oktoidentify_form_column(record, input_name)
     select("record", "oktoidentify", [['Yes', true ],
@@ -382,6 +359,8 @@ module CallHelper
     
   end
 
+  # -- THROUGH FRIST CALL -- #
+  
   def throughfirstcall_form_column(record, input_name)
     select("record", "throughfirstcall", [ ['Yes', true ], ['No - (Call waiting/engaged)', false]],
                                 { :selected => @record.throughfirstcall, :selected => nil, :prompt => true  })
@@ -396,19 +375,38 @@ module CallHelper
     
   end
   
-  def furtheractionrequired_column(record)
-    if record.furtheractionrequired
-      "Yes-no further action required"
-    else
-      "No-action required recorded"
-    end
+  # -- REFERAL SOURCE -- #
+
+  def referal_source_form_column(record, input_name)
+    select_id = @record.referal_source
     
+    select("record", "referal_source",
+                    ReferalSource.find(:all, :order => "id ASC").collect {|r| [r.name, r.id] },
+	{ :selected => select_id, :prompt => true })
   end
 
-  def user_form_column(record, input_name)
-    select("call", "user_id", User.find(:all).collect {|u| [u.login, u.id]})
+  # -- LOCATION TRUST -- #
+
+  def location_trust_form_column(record, input_name)
+      select_id = @record.location_trust
+
+      select("record", "location_trust",
+                        LocationTrust.find(:all, :order => "id ASC").collect {|r| [r.name, r.id] },
+                        { :selected => select_id, :prompt => true })
   end
 
+  # -- LOCATION POSTCODE -- #
+
+#  def location_postcode_form_column(record, input_name)
+#        select_id = @record.location_postcode
+#
+#        select("record", "location_postcode",
+#                          LocationPostcode.find(:all, :order => "id ASC").collect {|r| [r.postcode_text, r.id] },
+#                      {:selected => select_id, :prompt => true })
+#  end
+
+  # -- PRESENTING ISSUES -- #
+  
   def presenting_issues_form_column(record, input_name)
 
     innerHTML = String.new
@@ -447,6 +445,63 @@ module CallHelper
 
     innerHTML << "</div>"
     innerHTML 
+  end
+
+  # -- CALL IN TYPE -- #
+
+  def call_in_type_form_column(record, input_name)
+           select_id = @record.call_in_type
+
+       select("record", "call_in_type",
+          CallInType.find(:all, :order => "id ASC").collect {|r| [r.type_text, r.id] },
+                         {:selected => select_id, :prompt => true })
+  end
+
+
+  # -- CALL IN TYPE SUB -- #
+
+  def call_in_type_sub_form_column(record, input_name)
+       select_id = @record.call_in_type_sub
+        select("record", "call_in_type_sub",
+        CallInTypeSub.find(:all, :order => "id ASC").collect {|r| [r.sub_text, r.id] },
+                        {:selected => select_id, :prompt => true })
+  end
+
+  # -- FURTHER ACTION REQUIRED -- #
+
+  def furtheractionrequired_form_column(record, input_name)
+    select :record, :furtheractionrequired, 
+		[['Yes - no further action required', false],
+	         ['No - action required recorded', true]],
+		{:selected => @record.furtheractionrequired, :selected => nil, :prompt => true }
+  end
+  
+
+
+  def furtheractionrequired_column(record)
+    if record.furtheractionrequired
+      "Yes-no further action required"
+    else
+      "No-action required recorded"
+    end
+    
+  end
+
+  # -- LENGTH OF CALL -- #
+
+ def length_of_call_form_column(record, input_name)
+        select_id = @record.length_of_call
+
+        select("record", "length_of_call",
+                          LengthOfCall.find(:all, :order => "id ASC").collect {|r| [r.duration_text, r.id] },
+                      {:selected => select_id, :prompt => true })
+ end
+ 
+
+
+
+  def user_form_column(record, input_name)
+    select("call", "user_id", User.find(:all).collect {|u| [u.login, u.id]})
   end
 
 #  def type_of_call_form_column(record, input_name)
@@ -511,13 +566,5 @@ module CallHelper
 #  def direct_call_column(record)
  #   record.direct_call ?  "Direct" : "Concern for others"
  # end
-
-  def emergency_column(record)
-    if record.emergency
-      "Yes"
-    else
-      "No"
-    end
-  end
 
 end
