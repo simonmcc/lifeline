@@ -35,3 +35,17 @@ a.made-in {color:#aaaaaa }
 }
 a.menu-right, a.menu-right:visited {font-size: 18px; line-height:30px; padding-left:20px; text-decoration:none; color:#aaaaaa; background-color:#FAFAFA; width:200px; display:block; border-bottom:#CCCCCC solid 1px}
 a.menu-right:hover {background-color:#2679B7; color:#D8E9F1}
+ a.menu-right:hover {background-color:#2679B7; color:#D8E9F1}
+
+ table.show tr td {
+     border-bottom: 1px solid #aaa;
+     padding: 4px;
+}
+
+table.show tr td.label {
+  text-align: full;
+  font-size: 90%;
+  width: 40%;
+  font-weight: bold;
+  padding-right: 20px;
+}
