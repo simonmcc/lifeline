@@ -159,10 +159,10 @@ class CallController < AuthenticatedApplicationController
   def auto_complete_belongs_to_for_record_client_id
     auto_param = params[:record][:client][:text]
     @results = Client.find(:all,
-                           :conditions => ["LOWER(fname) LIKE ?", "%#{auto_param.downcase}%"],
+                           :conditions => ["LOWER(name) LIKE ?", "%#{auto_param.downcase}%"],
                            :limit => 10
                 )
-    render :inline => '<%= model_auto_completer_result(@results, :fname) %>'
+    render :inline => '<%= model_auto_completer_result(@results, :name) %>'
   end 
 
 
@@ -271,17 +271,72 @@ end
 
 
 module CallHelper
+
+ def self.boolean_column(name, display_true, display_false)
+   self.class_eval do
+     define_method("#{name}_column") do |record|
+       value = record.send(name)
+       if value.nil?
+         return "-"
+       elsif value
+         return display_true
+       else
+         return display_false
+       end
+     end
+
+   define_method("#{name}_form_column") do |record, input_name|
+     select :record, name, [[display_true, true], [display_false, false]], {:selected => @record.send(name), :selected => nil, :prompt => true }
+   end
+
+  end
+
+ end
+
+  def self.reference_column(name, reference_display_column)
+    self.class_eval do
+      define_method("#{name}_form_column") do |record, field|
+        select("record", name.to_s,
+                Inflector.camelize(name).constantize.find(:all, :order => "id ASC").collect {|r| [r.send(reference_display_column), r.id] },
+                { :selected => record.send("#{name}_id"), :prompt => true })
+              # { :selected => select_id, :prompt => true })
+        end
+                        
+                        
+                       
+     end
+                      
+   end
+  # boolean_column(column name, true value, false value). Defines column and form_column methods
+  boolean_column :direct_call, "Direct", "Concern for others"
+  boolean_column :usedlifelinebefore, "Yes (Known Caller)", "No (New Caller)"
+  boolean_column :furtheractionrequired, "Yes - no further action required", "No-action required recorded"
+  boolean_column :emergency, "Yes - move to immediate risk assess the situation", "No - continue"
+  boolean_column :oktoidentify, "Yes", "No - do not identify the service when ringing"
+  boolean_column :throughfirstcall, "Yes", "No - (Call waiting/engaged)"
   
+  # Generates *_form_column select lists from reference table
+  reference_column :referal_source, :name
+  reference_column :location_trust, :name
+  reference_column :location_postcode, :postcode_text
+  reference_column :length_of_call, :duration_text
+  reference_column :type_of_call, :name
+
+  def user_form_column(record, input_name)
+    select("call", "user_id", User.find(:all).collect {|u| [u.login, u.id]})
+  end
+
+
   # -- USED LIFELINE BEFORE -- #
 
- def usedlifelinebefore_form_column(record, input_name)
-    select_id = @record.usedlifelinebefore
-
-    select("record", "usedlifelinebefore",
-           
-                [['Yes (Known Caller)', true ], ['No (New Caller)', false]],
-		{ :selected => select_id, :selected => nil, :prompt => true })
-  end  
+ #def usedlifelinebefore_form_column(record, input_name)
+ #   select_id = @record.usedlifelinebefore
+#
+#    select("record", "usedlifelinebefore",
+ #          
+ #               [['Yes (Known Caller)', true ], ['No (New Caller)', false]],
+#		{ :selected => select_id, :selected => nil, :prompt => true })
+  #end  
  # def usedlifelinebefore_column(record)
  #     if record.usedlifelinebefore
  #     "Yes (Known Caller)"
@@ -291,45 +346,45 @@ module CallHelper
     
  # end
   
-  def usedlifelinebefore_column(record)
-    if record.nil?
-      "-"
-      elsif record.usedlifelinebefore
-      "Yes (Known Caller)"
-    else
-      "No (New Caller)"
-    end
+ # def usedlifelinebefore_column(record)
+  #  if record.nil?
+  #    "-"
+ #     elsif record.usedlifelinebefore
+ #     "Yes (Known Caller)"
+ #   else
+ #     "No (New Caller)"
+ #   end
     
-  end
+ # end
  
 
   # -- DIRECT CALL -- #
 
-  def direct_call_form_column(record, input_name)
-      select("record", "direct_call", [ ['Direct', true ], ['Concern for others', false]],
-                                             { :selected => @record.direct_call, :selected => nil, :prompt => true  })
-      
-  end
-  
-  def direct_call_column(record)
-    record.direct_call ? "Direct" : "Concern for others"
-
-  end
+ # def direct_call_form_column(record, input_name)
+ #     select("record", "direct_call", [ ['Direct', true ], ['Concern for others', false]],
+ #                                            { :selected => @record.direct_call, :selected => nil, :prompt => true  })
+ #     
+ # end
+ # 
+ # def direct_call_column(record)
+ #   record.direct_call ? "Direct" : "Concern for others"
+#
+ # end
     
   # -- EMERGENCY -- #
 
-  def emergency_form_column(record, input_name)
-    select("record", "emergency", [['Yes - move to immediate risk assess the situation', true ],
-                                   ['No - continue',  false ]],
-                                { :selected => @record.emergency, :selected => nil, :prompt => true  })
-  end
+#  def emergency_form_column(record, input_name)
+#    select("record", "emergency", [['Yes - move to immediate risk assess the situation', true ],
+#                                   ['No - continue',  false ]],
+#                                { :selected => @record.emergency, :selected => nil, :prompt => true  })
+#  end
 
-    def emergency_column(record)
-    if record.emergency
-      "Yes-move to immediate risk assess the situation"
-    else
-      "No-continue"
-    end
+ #   def emergency_column(record)
+ #   if record.emergency
+ #     "Yes-move to immediate risk assess the situation"
+ #   else
+ #     "No-continue"
+ #   end
   
    # def emergency_column(record)
    # if record.emergency
@@ -340,70 +395,70 @@ module CallHelper
  # end
 
     
-  end
+  #end
 
   # -- OK TO IDENTIFY -- #
 
-  def oktoidentify_form_column(record, input_name)
-    select("record", "oktoidentify", [['Yes', true ],
-                                   ['No - do not identify the service when ringing', false]],
-                                { :selected => @record.oktoidentify, :selected => nil, :prompt => true  })
-  end
-  
-  def oktoidentify_column(record)
-    if record.oktoidentify
-      "Yes"
-    else
-      "No-do not identify the service when ringing"
-    end
-    
-  end
+ # def oktoidentify_form_column(record, input_name)
+ #   select("record", "oktoidentify", [['Yes', true ],
+ #                                  ['No - do not identify the service when ringing', false]],
+ #                               { :selected => @record.oktoidentify, :selected => nil, :prompt => true  })
+ # end
+ # 
+ # def oktoidentify_column(record)
+ #   if record.oktoidentify
+ #     "Yes"
+ #   else
+ #     "No-do not identify the service when ringing"
+ #   end
+ #   
+ # end
 
   # -- THROUGH FRIST CALL -- #
   
-  def throughfirstcall_form_column(record, input_name)
-    select("record", "throughfirstcall", [ ['Yes', true ], ['No - (Call waiting/engaged)', false]],
-                                { :selected => @record.throughfirstcall, :selected => nil, :prompt => true  })
-  end
-  
-  def throughfirstcall_column(record)
-    if record.throughfirstcall
-      "Yes"
-    else
-      "No-(Call waiting/engaged)"
-    end
-    
-  end
+  #def throughfirstcall_form_column(record, input_name)
+  #  select("record", "throughfirstcall", [ ['Yes', true ], ['No - (Call waiting/engaged)', false]],
+  #                              { :selected => @record.throughfirstcall, :selected => nil, :prompt => true  })
+  #end
+ # 
+ # def throughfirstcall_column(record)
+ #   if record.throughfirstcall
+ #     "Yes"
+ #   else
+ #     "No-(Call waiting/engaged)"
+ #   end
+ #   
+ # end
   
   # -- REFERAL SOURCE -- #
 
-  def referal_source_form_column(record, input_name)
-    select_id = @record.referal_source
-    
-    select("record", "referal_source",
-                    ReferalSource.find(:all, :order => "id ASC").collect {|r| [r.name, r.id] },
-	{ :selected => select_id, :prompt => true })
-  end
-
+#  def referal_source_form_column(record, input_name)
+#    select_id = @record.referal_source
+#    
+#    select("record", "referal_source",
+#                    ReferalSource.find(:all, :order => "id ASC").collect {|r| [r.name, r.id] },
+#	{ :selected => select_id, :prompt => true })
+#  end
+#
   # -- LOCATION TRUST -- #
 
-  def location_trust_form_column(record, input_name)
-      select_id = @record.location_trust
-
-      select("record", "location_trust",
-                        LocationTrust.find(:all, :order => "id ASC").collect {|r| [r.name, r.id] },
-                        { :selected => select_id, :prompt => true })
-  end
-
+#  def location_trust_form_column(record, input_name)
+#      select_id = @record.location_trust
+#
+#      select("record", "location_trust",
+#                        LocationTrust.find(:all, :order => "id ASC").collect {|r| [r.name, r.id] },
+#                        { :selected => select_id, :prompt => true })
+#  end
+#
   # -- LOCATION POSTCODE -- #
 
-  def location_postcode_form_column(record, input_name)
-        select_id = @record.location_postcode
-
-        select("record", "location_postcode",
-                          LocationPostcode.find(:all, :order => "id ASC").collect {|r| [r.postcode_text, r.id] },
-                      {:selected => select_id, :prompt => true })
-  end
+#  def location_postcode_form_column(record, input_name)
+#        select_id = @record.location_postcode
+#
+#        select("record", "location_postcode",
+#                          LocationPostcode.find(:all, :order => "id ASC").collect {|r| [r.postcode_text, r.id] },
+#                      {:selected => select_id, :prompt => true })
+#  end
 
   # -- PRESENTING ISSUES -- #
   
@@ -469,41 +524,34 @@ module CallHelper
 
   # -- FURTHER ACTION REQUIRED -- #
 
-  def furtheractionrequired_form_column(record, input_name)
-    select :record, :furtheractionrequired, 
-		[['Yes - no further action required', false],
-	         ['No - action required recorded', true]],
-		{:selected => @record.furtheractionrequired, :selected => nil, :prompt => true }
-  end
+ # def furtheractionrequired_form_column(record, input_name)
+ #   select :record, :furtheractionrequired, 
+#		[['Yes - no further action required', false],
+#	         ['No - action required recorded', true]],
+#		{:selected => @record.furtheractionrequired, :selected => nil, :prompt => true }
+#  end
   
 
-
-  def furtheractionrequired_column(record)
-    if record.furtheractionrequired
-      "Yes-no further action required"
-    else
-      "No-action required recorded"
-    end
-    
-  end
+#
+ # def furtheractionrequired_column(record)
+ #   if record.furtheractionrequired
+ #     "Yes-no further action required"
+ #   else
+ #     "No-action required recorded"
+ #   end
+ #   
+ # end
 
   # -- LENGTH OF CALL -- #
 
- def length_of_call_form_column(record, input_name)
-        select_id = @record.length_of_call
-
-        select("record", "length_of_call",
-                          LengthOfCall.find(:all, :order => "id ASC").collect {|r| [r.duration_text, r.id] },
-                      {:selected => select_id, :prompt => true })
- end
+# def length_of_call_form_column(record, input_name)
+#        select_id = @record.length_of_call
+#
+#        select("record", "length_of_call",
+#                          LengthOfCall.find(:all, :order => "id ASC").collect {|r| [r.duration_text, r.id] },
+#                      {:selected => select_id, :prompt => true })
+# end
  
-
-
-
-  def user_form_column(record, input_name)
-    select("call", "user_id", User.find(:all).collect {|u| [u.login, u.id]})
-  end
-
 #  def type_of_call_form_column(record, input_name)
 
     #innerHTML = String.new
@@ -547,7 +595,7 @@ module CallHelper
   def location_town_form_column(record, input_name)
     if !self.params_for['location_town_id'].nil?
       # We have defaults to populate from :-)
-      location_town = Location_town.find(self.params_for['location_town_id'])
+      location_town = LocationTown.find(self.params_for['location_town_id'])
       options = {:hf_value => location_town.id, :tf_value => location_town.to_label }
     else
       options = {}
@@ -562,9 +610,12 @@ module CallHelper
     record.created_at.strftime("%d-%b-%y&nbsp;%H:%M")
   end
 
-
-#  def direct_call_column(record)
- #   record.direct_call ?  "Direct" : "Concern for others"
- # end
+  def understoodconfidentiality_column(record)
+    if record.understoodconfidentiality
+      'Yes'
+    else
+      'No'
+    end
+  end
 
 end

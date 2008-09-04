@@ -6,6 +6,6 @@ class Client < ActiveRecord::Base
 
   # this used by AS for displaying a refernce to this object
   def to_label
-    "#{sname}, #{fname}"
+    "#{name}"
   end
 end

@@ -8,8 +8,7 @@ class ClientController < AuthenticatedApplicationController
   active_scaffold :clients do |config|
 
     config.columns =  [:project_id,
-                        :fname,
-                        #:sname,
+                        :name,
                         :mobile,
                         :notes,
                         :address,
@@ -29,14 +28,14 @@ class ClientController < AuthenticatedApplicationController
                         ]
 
     config.list.columns =  [:id,
-                            :fname,
+                            :name,
                             #:sname,
                             :mobile,
                             :notes
                            ]
 
     config.update.columns =  [:project_id,
-                              :fname,
+                              :name,
                               #:sname,
                               :address,
                               :town,
@@ -57,7 +56,7 @@ class ClientController < AuthenticatedApplicationController
     config.show.link.page = true
     config.update.link.page = true
 
-    config.columns[:fname].label = "Fullname"
+    config.columns[:name].label = "Fullname"
     #config.columns[:sname].label = "Surname"
 
     config.columns[:gender].form_ui = :select
