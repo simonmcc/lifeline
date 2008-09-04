@@ -452,13 +452,13 @@ module CallHelper
 #
   # -- LOCATION POSTCODE -- #
 
-#  def location_postcode_form_column(record, input_name)
-#        select_id = @record.location_postcode
-#
-#        select("record", "location_postcode",
-#                          LocationPostcode.find(:all, :order => "id ASC").collect {|r| [r.postcode_text, r.id] },
-#                      {:selected => select_id, :prompt => true })
-#  end
+ def location_postcode_form_column(record, input_name)
+        select_id = @record.location_postcode
+
+        select("record", "location_postcode",
+                          LocationPostcode.find(:all, :order => "id ASC").collect {|r| [r.postcode_text, r.id] },
+                      {:selected => select_id, :prompt => true })
+  end
 
   # -- PRESENTING ISSUES -- #
   
