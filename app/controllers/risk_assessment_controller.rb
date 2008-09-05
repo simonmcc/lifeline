@@ -91,13 +91,13 @@ module RiskAssessmentHelper
   #    { :selected => @record.clinical_consulation_required, :prompt => true  })
   #end
 
-  #def clinical_consultation_required(record)
-  #  if record.clinical_consultation_required
-  #    "Yes"
-  #  else
-  #    "No" 
-  #  end
+  def clinical_consultation_required_column(record)
+    if record.clinical_consultation_required
+      "Yes"
+    else
+      "No" 
+    end
   
-  #end
+  end
 
 end
