@@ -51,7 +51,7 @@ class CreateDatabase < ActiveRecord::Migration
       t.string          :rf_town
       t.string          :rf_post_code
       t.string          :rf_number
-#      t.references      :project_id
+      t.string     :project_id
 #      t.references      :lifeline_id
       t.timestamps
     end
@@ -535,7 +535,9 @@ class CreateDatabase < ActiveRecord::Migration
       t.references      :location_postcode
       t.references      :aware_of_services
       t.references      :call_in_type
+      t.string          :call_in_type_other
       t.references      :call_in_type_sub
+      t.string          :call_in_type_sub_other
       t.boolean         :furtheractionrequired
       t.references      :caller_satisfaction
       t.references      :length_of_call

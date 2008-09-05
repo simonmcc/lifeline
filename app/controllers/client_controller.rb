@@ -2,7 +2,7 @@ class ClientController < AuthenticatedApplicationController
 
   active_scaffold :clients do |config|
 
-    config.columns =  [ # :project_id,
+    config.columns =  [ :project_id,
                         :name,
                         :mobile,
                         :notes,
@@ -20,6 +20,27 @@ class ClientController < AuthenticatedApplicationController
                         :rf_post_code,
                         :rf_number
                         ]
+    
+                        
+    config.show.columns =  [  :project_id,
+                              :id,
+                              :name,
+                              :mobile,
+                              :notes,
+                              :address,
+                              :town,
+                              :post_code,
+                              :landline,
+                              :gender,
+                              :dob,
+                              :understoodconfidentiality,
+                              :rf_name,
+                              :rf_designation,
+                              :rf_address,
+                              :rf_town,
+                              :rf_post_code,
+                              :rf_number
+                          ]
 
     config.list.columns =  [:id,
                             :name,
@@ -27,7 +48,7 @@ class ClientController < AuthenticatedApplicationController
                             :notes
                            ]
 
-    config.update.columns =  [# :project_id,
+    config.update.columns =  [:project_id,
                               :name,
                               :address,
                               :town,
@@ -46,6 +67,8 @@ class ClientController < AuthenticatedApplicationController
     config.actions.exclude :delete
     config.show.link.page = true
     config.update.link.page = true
+    
+    config.columns[:id].label = "Lifeline ID"
 
     config.columns[:name].label = "Name"
 

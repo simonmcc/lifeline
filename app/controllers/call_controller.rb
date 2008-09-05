@@ -30,7 +30,9 @@ class CallController < AuthenticatedApplicationController
                         :presenting_issues,     # virtual field, part of habtm
                         :aware_of_services,
                         :call_in_type,
+                        :call_in_type_other,
                         :call_in_type_sub,
+                        :call_in_type_sub_other,
                         :furtheractionrequired,
                         :caller_satisfaction,
                         :length_of_call,
@@ -111,11 +113,13 @@ class CallController < AuthenticatedApplicationController
 
     config.columns[:call_in_type].label = 'Identify the Type of Call In'
     config.columns[:call_in_type].form_ui = :select
-
+    
+    config.columns[:call_in_type_other].label = 'Other Please Specify'
+    
     config.columns[:call_in_type_sub].label = 'Subcategory of the Type of Call In'
     config.columns[:call_in_type_sub].form_ui = :select
-
-
+    
+    config.columns[:call_in_type_sub_other].label = 'Other Please Specify'
 
     config.columns[:furtheractionrequired].label = 'Did the assistance provided adequately address the need of the caller identified when ringing in?'
 
