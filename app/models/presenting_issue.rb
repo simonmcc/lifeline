@@ -7,11 +7,11 @@ class PresentingIssue < ActiveRecord::Base
 
   def self.getCategories
     # Returns an array of strings for the categories
-    
+
     # Array to hold the categories
     categories = Array.new
 
-    rs = self.find_by_sql "SELECT DISTINCT category FROM presenting_issues ORDER BY id"
+    rs = self.find_by_sql "SELECT DISTINCT category FROM presenting_issues ORDER BY category"
     rs.each {|p| categories << p.category }
 
     categories

@@ -1,5 +1,5 @@
 class CallOutController < AuthenticatedApplicationController
-  
+
   #include ApplicationHelper
   #layout 'application'
 
@@ -11,14 +11,14 @@ class CallOutController < AuthenticatedApplicationController
   active_scaffold :call_out do |config|
 
     # Apple some order to the fields being displayed
-    config.columns = [:time_of_call, 
+    config.columns = [:time_of_call,
                       :client,
                       :call_out_type,
                       :call_outcome,
                       :notes]
     # This hides the "Create New" link for the list view
     config.create.link = nil
-    
+
     # Don't do the sub-form thing on create, just pick from existing entries
     config.columns[:client].form_ui = :auto_complete
 
@@ -32,19 +32,19 @@ class CallOutController < AuthenticatedApplicationController
     config.columns[:notes].options = { :cols => 60, :rows => 20}
   end
 
-    
+
   # method to populate the type down model_auto_completer, but this should really
   # be done with the following doobery:
   # auto_complete_belongs_to_for "record", :client, :to_label
   def auto_complete_belongs_to_for_record_client_id
     auto_param = params[:record][:client][:text]
     @results = Client.find(:all,
-                           :conditions => ["LOWER(fname) LIKE ?", "%#{auto_param.downcase}%"],
+                           :conditions => ["LOWER(name) LIKE ?", "%#{auto_param.downcase}%"],
                            :limit => 10
                 )
-    render :inline => '<%= model_auto_completer_result(@results, :fname) %>'
-  end 
- 
+    render :inline => '<%= model_auto_completer_result(@results, :name) %>'
+  end
+
 end
 
 module CallOutHelper

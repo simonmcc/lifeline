@@ -3,7 +3,8 @@ Design - http://www.roman.lt/
 Released for free under a Creative Commons Attribution 2.5 License
 */
 
-body {background: #2E5D89; margin:0px; padding-top:15px; font-family: sans-serif; font-size:13px; color:#222222}
+body {background: #2E5D89; margin:0px; padding-top:15px; font-family: sans-serif; font-size:11px; color:#222222}
+* { font-size: 11px; }
 td {vertical-align: top; line-height:20px}
 h1 {font-size:18px; font-weight:normal; padding:0px; margin:0px}
 .main-table {border: 1px solid #FFFFFF; background-color:#FFFFFF; width:100%}
@@ -35,11 +36,10 @@ a.made-in {color:#aaaaaa }
 }
 a.menu-right, a.menu-right:visited {font-size: 18px; line-height:30px; padding-left:20px; text-decoration:none; color:#aaaaaa; background-color:#FAFAFA; width:200px; display:block; border-bottom:#CCCCCC solid 1px}
 a.menu-right:hover {background-color:#2679B7; color:#D8E9F1}
- a.menu-right:hover {background-color:#2679B7; color:#D8E9F1}
 
- table.show tr td {
-     border-bottom: 1px solid #aaa;
-     padding: 4px;
+table.show tr td {
+  border-bottom: 1px solid #aaa;
+  padding: 4px;
 }
 
 table.show tr td.label {
@@ -49,3 +49,9 @@ table.show tr td.label {
   font-weight: bold;
   padding-right: 20px;
 }
+
+hr {
+  border: 0px;
+  border-bottom: 1px solid #ccc;
+}
+

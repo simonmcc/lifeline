@@ -49,7 +49,7 @@
 
 <% if @client %>
 <br /><br />
-<p><strong>For <%= @client.sname %>, <%= @client.fname %></strong></p>
+<p><strong>For <%= @client.name %></strong></p>
 <%= link_to 'New Call In', {:controller => 'call', :action => 'new', :client_id=>@client.id}, {:class=>'menu-right'} %>
 <%= link_to 'New Call Out', { :controller => 'call_out', :action => 'new', :client_id=>@client.id}, {:class=>'menu-right'} %>
 <%= link_to 'New Risk Assessment', {:controller => 'risk_assessment', :action => 'new', :client_id=>@client.id}, {:class=>'menu-right'} %>

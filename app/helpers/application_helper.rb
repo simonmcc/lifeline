@@ -1,4 +1,5 @@
 # Methods added to this helper will be available to all templates in the application.
+
 module ApplicationHelper
 
   def multi_select_collection(collection_name, list_selections,
@@ -39,4 +40,59 @@ module ApplicationHelper
     result << "</select>\n"
     return result
   end
+
+  @@NS = ["kml:http://earth.google.com/kml/2.0", "xal:urn:oasis:names:tc:ciq:xsdschema:xAL:2.0"]
+
+
+  def self.extract(res, key, pm, element)
+    node = pm.find_first(".//#{element}", @@NS)
+    if node
+      res.send("#{key}=", node.content)
+    end
+  end
+
+  def self.address_finder(address)
+
+    require 'open-uri'
+    require 'ostruct'
+    require 'libxml'
+
+    key="ABQIAAAAICX3M8R3u5HtMyTs0sr-OxRcuVSAEWmszhrWxgpZQw5R8qvsThSTPjTLq7HwiKrWqj5xwiK6chbYLw"
+    url = URI.parse("http://maps.google.co.uk/maps/geo?q=#{CGI.escape(address)}&gl=UK&output=xml&key=#{CGI.escape(key)}&oe=utf-8")
+
+    puts "http://maps.google.co.uk/maps/geo?q=#{CGI.escape(address)}&gl=UK&output=xml&key=#{CGI.escape(key)}&oe=utf-8"
+
+    result = url.read
+
+    parser = LibXML::XML::Parser.new()
+    parser.string = result
+    xml_doc = parser.parse
+
+    hits = []
+
+    xml_doc.find("//kml:Placemark", @@NS).each do |pm|
+      res = OpenStruct.new
+
+      coordinates=pm.find_first('.//kml:coordinates', @@NS).content.split(',')
+      res.lat=coordinates[1]
+      res.lng=coordinates[0]
+      extract(res, :country_code, pm, "xal:CountryNameCode")
+      res.provider='google'
+      extract(res, :postcode, pm, "xal:PostalCodeNumber")
+
+      extract(res, :city, pm, 'xal:LocalityName')
+      extract(res, :state, pm, 'xal:AdministrativeAreaName')
+      extract(res, :full_address, pm, 'kml:address')
+      extract(res, :street_address, pm, 'xal:ThoroughfareName')
+
+      address_details = pm.find_first('//xal:AddressDetails', @@NS)
+      accuracy = address_details ? address_details.attributes['Accuracy'].to_i : 0
+      res.precision=%w{unknown country state state city zip zip+4 street address}[accuracy]
+      res.success=true
+      hits << res
+    end
+
+    return hits
+  end
+
 end

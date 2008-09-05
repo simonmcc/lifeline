@@ -1,13 +1,8 @@
 class ClientController < AuthenticatedApplicationController
-#  layout 'application'
-  
-  # Protect this controller, login required
- # include AuthenticatedSystem
- # before_filter :login_required
 
   active_scaffold :clients do |config|
 
-    config.columns =  [:project_id,
+    config.columns =  [ # :project_id,
                         :name,
                         :mobile,
                         :notes,
@@ -16,10 +11,9 @@ class ClientController < AuthenticatedApplicationController
                         :post_code,
                         :landline,
                         :gender,
-			:dob,
+                        :dob,
                         :understoodconfidentiality,
-                        :rf_fname,
-                        :rf_sname,
+                        :rf_name,
                         :rf_designation,
                         :rf_address,
                         :rf_town,
@@ -29,21 +23,18 @@ class ClientController < AuthenticatedApplicationController
 
     config.list.columns =  [:id,
                             :name,
-                            #:sname,
                             :mobile,
                             :notes
                            ]
 
-    config.update.columns =  [:project_id,
+    config.update.columns =  [# :project_id,
                               :name,
-                              #:sname,
                               :address,
                               :town,
                               :post_code,
                               :mobile,
                               :landline,
-                              :rf_fname,
-                              :rf_sname,
+                              :rf_name,
                               :rf_number,
                               :gender,
                               :notes
@@ -51,23 +42,21 @@ class ClientController < AuthenticatedApplicationController
 
     # This hides the "Create New" link for the list view
     config.create.link = nil
-   
+
     config.actions.exclude :delete
     config.show.link.page = true
     config.update.link.page = true
 
-    config.columns[:name].label = "Fullname"
-    #config.columns[:sname].label = "Surname"
+    config.columns[:name].label = "Name"
 
     config.columns[:gender].form_ui = :select
-    
+
     config.columns[:notes].form_ui = :textarea
     config.columns[:notes].options = {:rows => 10, :cols => 60}
 
     config.columns[:understoodconfidentiality].form_ui = :checkbox
-    
-    config.columns[:rf_fname].label = "Friend/Refer Forename"
-    config.columns[:rf_sname].label = "Friend/Refer Surname"
+
+    config.columns[:rf_name].label = "Friend/Refer Name"
     config.columns[:rf_number].label = "Friend/Refer Phone Number "
     config.columns[:rf_designation].label = "Friend/Refer Designation"
     config.columns[:rf_address].label = "Friend/Refer Address"

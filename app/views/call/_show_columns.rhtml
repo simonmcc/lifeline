@@ -1,0 +1,13 @@
+<table width="100%" class="show" cellpadding="0" cellspacing="0">
+<% columns.each :for => @record do |column| %>
+ <tr valign="top" style="border: 1px solid #ccc;">
+  <% if column.is_a? ActiveScaffold::DataStructures::ActionColumns -%>
+    <td class="label"><b><%= column.name -%></b></td>
+    <td><%= render :partial => 'show_columns' %></td>
+  <% else -%>
+    <td class="label"><%= column.label -%></td>
+    <td><%= get_column_value(@record, column) -%> &nbsp;</td>
+  <% end -%>
+ </tr>
+<% end -%>
+</table>

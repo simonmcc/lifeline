@@ -2,12 +2,12 @@ class CreateDatabase < ActiveRecord::Migration
   def self.up
 
     create_table :users do |t|
-      t.string   :login
-      t.string   :email
-      t.string   :crypted_password,          :limit => 40
-      t.string   :salt,                      :limit => 40
-      t.string   :remember_token
-      t.datetime :remember_token_expires_at
+      t.string          :login
+      t.string          :email
+      t.string          :crypted_password,          :limit => 40
+      t.string          :salt,                      :limit => 40
+      t.string          :remember_token
+      t.datetime        :remember_token_expires_at
 
       t.timestamps
     end
@@ -15,7 +15,7 @@ class CreateDatabase < ActiveRecord::Migration
     User.create(:login=>'johnw', :email=>'johnw@sla-mobile.com', :password=>'Freddy', :password_confirmation=>'Freddy')
 
     create_table :ynnas do |t|
-      t.string :text
+      t.string  :text
     end
 
     YNNA.create(:text => 'Yes')
@@ -24,7 +24,7 @@ class CreateDatabase < ActiveRecord::Migration
 
 
     create_table :genders do |t|
-      t.string :name
+      t.string  :name
     end
 
     Gender.create(:name => 'Male')
@@ -32,32 +32,32 @@ class CreateDatabase < ActiveRecord::Migration
     Gender.create(:name => 'Refused')
 
     create_table :clients do |t|
-      t.string  :name
-      t.string  :address
-      t.string  :town
-      t.string  :post_code
-      t.string  :mobile
-      t.string  :landline
-      t.string  :fr_fname
-      t.string  :fr_sname
-      t.string  :fr_number
-      t.references :gender
-      t.date    :dob
-      t.boolean :understoodconfidentiality
-      t.string  :notes
-      t.string  :rf_fname
-      t.string  :rf_sname
-      t.string  :rf_designation
-      t.string  :rf_address
-      t.string  :rf_town
-      t.string  :rf_post_code
-      t.string  :rf_number
-      t.string  :project_id
+      t.string          :name
+      t.string          :address
+      t.string          :town
+      t.string          :post_code
+      t.string          :mobile
+      t.string          :landline
+      t.string          :fr_fname
+      t.string          :fr_sname
+      t.string          :fr_number
+      t.references      :gender
+      t.date            :dob
+      t.boolean         :understoodconfidentiality
+      t.string          :notes
+      t.string          :rf_name
+      t.string          :rf_designation
+      t.string          :rf_address
+      t.string          :rf_town
+      t.string          :rf_post_code
+      t.string          :rf_number
+#      t.references      :project_id
+#      t.references      :lifeline_id
       t.timestamps
     end
 
     create_table :allocation_services do |t|
-      t.string   :service_text
+      t.string          :service_text
       t.timestamps
     end
 
@@ -72,17 +72,17 @@ class CreateDatabase < ActiveRecord::Migration
 
 
     create_table :allocations do |t|
-      t.references :user
-      t.references :client
-      t.integer    :allocation_service
-      t.date       :date_intervention_ended
-      t.integer    :num_of_intervention_session, :default => 0
-      t.string     :allocation_service_note
+      t.references      :user
+      t.references      :client
+      t.references      :allocation_service
+      t.date            :date_intervention_ended
+      t.integer         :num_of_intervention_session, :default => 0
+      t.string          :allocation_service_note
       t.timestamps
     end
 
     create_table :aware_of_services do |t|
-      t.string   :awareofservices_text
+      t.string          :awareofservices_text
       t.timestamps
     end
 
@@ -92,10 +92,10 @@ class CreateDatabase < ActiveRecord::Migration
 
 
     create_table :call_in_type_subs do |t|
-      t.string   :sub_text
+      t.string          :sub_text
       t.timestamps
     end
-    
+
     CallInTypeSub.create(:sub_text => "Intervention required/active suicide plan or has over dosed or self harmed at that time")
     CallInTypeSub.create(:sub_text => "High level of suicidal ideation/actively considering; no plan formed")
     CallInTypeSub.create(:sub_text => "Contacts who are depressed or have experienced traumatic events (need to support to ensure no deterioration")
@@ -129,10 +129,9 @@ class CreateDatabase < ActiveRecord::Migration
     CallInType.create(:type_text => "Other")
 
 
-
     create_table :call_out_types do |t|
-      t.string   :name
-      t.boolean  :freetext
+      t.string          :name
+      t.boolean         :freetext
       t.timestamps
     end
 
@@ -160,7 +159,7 @@ class CreateDatabase < ActiveRecord::Migration
 
 
     create_table :call_outcomes do |t|
-      t.string   :name
+      t.string          :name
       t.timestamps
     end
 
@@ -171,18 +170,18 @@ class CreateDatabase < ActiveRecord::Migration
 
 
     create_table :call_outs do |t|
-      t.datetime :time_of_call
-      t.references :client
-      t.references :call_outcome
-      t.references :call_out_type
-      t.string   :call_out_type_freetext
-      t.string   :notes
+      t.datetime        :time_of_call
+      t.references      :client
+      t.references      :call_outcome
+      t.references      :call_out_type
+      t.string          :call_out_type_freetext
+      t.string          :notes
       t.timestamps
     end
 
 
     create_table :caller_satisfactions do |t|
-      t.string   :satisfaction_text
+      t.string          :satisfaction_text
       t.timestamps
     end
 
@@ -194,9 +193,9 @@ class CreateDatabase < ActiveRecord::Migration
 
 
     create_table :followup_services do |t|
-      t.string   :name
-      t.boolean  :freetext
-      t.string   :freetext_desc
+      t.string          :name
+      t.boolean         :freetext,      :default => false
+      t.string          :freetext_desc
       t.timestamps
     end
 
@@ -206,11 +205,11 @@ class CreateDatabase < ActiveRecord::Migration
     FollowupService.create(:name => "Yes - CONTACT YOUTH PROJECT", :freetext => true, :freetext_desc => "Name of project")
     FollowupService.create(:name => "Yes - referral to outside organisation/service", :freetext => true, :freetext_desc => "Name of organisation/service")
     FollowupService.create(:name => "No - follow up action agreed", :freetext => true, :freetext_desc => "time & date")
-    FollowupService.create(:name => "No - no follow up required", :freetext => true, :freetext_desc => "reason")
+    FollowupService.create(:name => "No - no follow up required", :freetext => true, :freetext_desc =>  "reason")
 
 
     create_table :length_of_calls do |t|
-      t.string   :duration_text
+      t.string          :duration_text
       t.timestamps
     end
 
@@ -229,7 +228,7 @@ class CreateDatabase < ActiveRecord::Migration
 
 
     create_table :location_postcodes do |t|
-      t.string   :postcode_text
+      t.string          :postcode_text
       t.timestamps
     end
 
@@ -335,7 +334,7 @@ class CreateDatabase < ActiveRecord::Migration
 
 
     create_table :location_towns do |t|
-      t.string   :town_text
+      t.string          :town_text
       t.timestamps
     end
 
@@ -385,7 +384,7 @@ class CreateDatabase < ActiveRecord::Migration
 
 
     create_table :location_trusts do |t|
-      t.string   :name
+      t.string          :name
       t.timestamps
     end
 
@@ -401,9 +400,9 @@ class CreateDatabase < ActiveRecord::Migration
 
 
     create_table :presenting_issues do |t|
-      t.string :code
-      t.string :issue
-      t.string :category
+      t.string          :code
+      t.string          :issue
+      t.string          :category
     end
 
     PresentingIssue.create(:code => '1.04', :issue => 'Abortion')
@@ -494,9 +493,9 @@ class CreateDatabase < ActiveRecord::Migration
 
 
     create_table :referal_sources do |t|
-      t.string  :name
-      t.boolean :free_text
-      t.string  :description
+      t.string          :name
+      t.boolean         :free_text,   :default => false
+      t.string          :description
     end
 
     ReferalSource.create(:name => 'Radio Advertisement')
@@ -516,42 +515,43 @@ class CreateDatabase < ActiveRecord::Migration
     ReferalSource.create(:name => 'Other', :free_text => true)
 
     create_table :calls do |t|
-      t.references :user
-      t.boolean  :usedlifelinebefore
-      t.boolean  :direct_call
-      t.string   :caller_name
-      t.references :client
-      t.boolean  :understoodconfidentiality
-      t.boolean  :emergency
-      t.string   :contact_telephone
-      t.boolean  :oktoidentify
-      t.boolean  :throughfirstcall
-      t.references :referal_source
-      t.string   :referal_text
-      t.references :gender
-      t.integer  :age
-      t.boolean  :age_refused
-      t.references :location_trust
-      t.references :location_town
-      t.string   :location_postcode
-      t.references :aware_of_services
-      t.references :type_of_call
-      t.boolean  :furtheractionrequired
-      t.references :caller_satisfaction
-      t.references :length_of_call
-      t.datetime :call_start_time
-      t.string   :call_in_summary
+      t.references      :user
+      t.boolean         :usedlifelinebefore
+      t.boolean         :direct_call
+      t.string          :caller_name
+      t.references      :client
+      t.boolean         :understoodconfidentiality
+      t.boolean         :emergency
+      t.string          :contact_telephone
+      t.boolean         :oktoidentify
+      t.boolean         :throughfirstcall
+      t.references      :referal_source
+      t.string          :referal_text
+      t.references      :gender
+      t.integer         :age
+      t.boolean         :age_refused
+      t.references      :location_trust
+      t.references      :location_town
+      t.references      :location_postcode
+      t.references      :aware_of_services
+      t.references      :call_in_type
+      t.references      :call_in_type_sub
+      t.boolean         :furtheractionrequired
+      t.references      :caller_satisfaction
+      t.references      :length_of_call
+      t.datetime        :call_start_time
+      t.string          :call_in_summary
       t.timestamps
     end
 
     create_table :calls_presenting_issues, :id => false do |t|
-      t.integer :call_id,             :default => 0
-      t.references :presenting_issue
+      t.integer         :call_id,             :default => 0
+      t.references      :presenting_issue
     end
 
     create_table :risk_assessment_outcomes do |t|
-      t.string   :name
-      t.boolean  :freetext
+      t.string          :name
+      t.boolean         :freetext,   :default => false
       t.timestamps
     end
 
@@ -563,7 +563,7 @@ class CreateDatabase < ActiveRecord::Migration
 
 
     create_table :risk_assessment_types do |t|
-      t.string   :category
+      t.string          :category
       t.timestamps
     end
 
@@ -574,8 +574,8 @@ class CreateDatabase < ActiveRecord::Migration
 
 
     create_table :safety_contracts do |t|
-      t.string   :name
-      t.boolean  :freetext
+      t.string          :name
+      t.boolean         :freetext,   :default => false
 
       t.timestamps
     end
@@ -587,14 +587,14 @@ class CreateDatabase < ActiveRecord::Migration
 
 
     create_table :risk_assessments do |t|
-      t.references :client
-      t.references :safety_contract
-      t.boolean    :clinical_consultation_required
-      t.references :followup_service
-      t.references :risk_assessment_type
-      t.references :risk_assessment_outcome
-      t.references :user
-      t.string     :risk_assessment_note
+      t.references      :client
+      t.references      :safety_contract
+      t.boolean         :clinical_consultation_required
+      t.references      :followup_service
+      t.references      :risk_assessment_type
+      t.references      :risk_assessment_outcome
+      t.references      :user
+      t.string          :risk_assessment_note
 
       t.timestamps
     end
@@ -624,37 +624,38 @@ class CreateDatabase < ActiveRecord::Migration
       execute "ALTER TABLE risk_assessments ADD CONSTRAINT c_followup_service_fkey FOREIGN KEY (followup_service_id) REFERENCES followup_services (id) MATCH FULL"
       execute "ALTER TABLE risk_assessments ADD CONSTRAINT c_risk_assessment_type_fkey FOREIGN KEY (risk_assessment_type_id) REFERENCES risk_assessment_types (id) MATCH FULL"
       execute "ALTER TABLE risk_assessments ADD CONSTRAINT c_risk_assessment_outcome_fkey FOREIGN KEY (risk_assessment_outcome_id) REFERENCES risk_assessment_outcomes (id) MATCH FULL"
+      execute "ALTER TABLE allocations ADD CONSTRAINT c_allocations_allocation_service_fkey FOREIGN KEY (allocation_service_id) REFERENCES allocation_services (id) MATCH FULL"
     end
   end
 
 
   def self.down
-    drop_table :risk_assessments
-    drop_table :safety_contracts
-    drop_table :risk_assessment_outcomes
-    drop_table :calls_presenting_issues
-    drop_table :calls
-    drop_table :type_of_calls
-    drop_table :referal_sources
-    drop_table :presenting_issues
-    drop_table :location_trusts
-    drop_table :location_towns
-    drop_table :location_postcodes
-    drop_table :length_of_calls
-    drop_table :followup_services
-    drop_table :caller_satisfactions
-    drop_table :call_outs
-    drop_table :call_outcomes
-    drop_table :call_out_types
-    drop_table :call_in_types
-    drop_table :call_in_type_subs
-    drop_table :aware_of_services
-    drop_table :allocations
-    drop_table :allocation_services
-    drop_table :clients
-    drop_table :genders
-    drop_table :risk_assessment_types
-    drop_table :ynnas
-    drop_table :users
+    drop_table  :risk_assessments
+    drop_table  :safety_contracts
+    drop_table  :risk_assessment_outcomes
+    drop_table  :calls_presenting_issues
+    drop_table  :calls
+    drop_table  :type_of_calls
+    drop_table  :referal_sources
+    drop_table  :presenting_issues
+    drop_table  :location_trusts
+    drop_table  :location_towns
+    drop_table  :location_postcodes
+    drop_table  :length_of_calls
+    drop_table  :followup_services
+    drop_table  :caller_satisfactions
+    drop_table  :call_outs
+    drop_table  :call_outcomes
+    drop_table  :call_out_types
+    drop_table  :call_in_types
+    drop_table  :call_in_type_subs
+    drop_table  :aware_of_services
+    drop_table  :allocations
+    drop_table  :allocation_services
+    drop_table  :clients
+    drop_table  :genders
+    drop_table  :risk_assessment_types
+    drop_table  :ynnas
+    drop_table  :users
   end
-  end
+end

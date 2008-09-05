@@ -10,42 +10,42 @@ class CallController < AuthenticatedApplicationController
 
   active_scaffold :call do |config|
 
-    config.columns = [:user, 
-			:created_at,
-			:usedlifelinebefore, 
-			:direct_call, 
-			#:caller_name, 
-			:client,
-			:understoodconfidentiality, 
-			:contact_telephone,
-			:emergency, 
-			:oktoidentify, 
-			:throughfirstcall, 
-			:referal_source, 
-			:gender, 
-			:age,
-			:location_trust,
+    config.columns = [:user,
+                        :created_at,
+                        :usedlifelinebefore,
+                        :direct_call,
+                        #:caller_name,
+                        :client,
+                        :understoodconfidentiality,
+                        :contact_telephone,
+                        :emergency,
+                        :oktoidentify,
+                        :throughfirstcall,
+                        :referal_source,
+                        :gender,
+                        :age,
+                        :location_trust,
                         :location_town,
                         :location_postcode,
                         :presenting_issues,     # virtual field, part of habtm
-			:aware_of_services,
+                        :aware_of_services,
                         :call_in_type,
                         :call_in_type_sub,
                         :furtheractionrequired,
-			:caller_satisfaction,
-			:length_of_call,
-                        :call_in_summary  			
+                        :caller_satisfaction,
+                        :length_of_call,
+                        :call_in_summary
     ]
 
     config.list.columns = [
-			:created_at,
+                        :created_at,
                         :presenting_issues,     # virtual field, part of habtm
-                        :user, 
-			:length_of_call,
+                        :user,
+                        :length_of_call,
 #                        :call_in_type,
-			:call_in_summary,
+                        :call_in_summary,
                         :client
-			]
+                        ]
 
     #config.actions.exclude :show
     #config.actions.exclude :update
@@ -94,7 +94,7 @@ class CallController < AuthenticatedApplicationController
 
     config.columns[:location_trust].label ='Where in the country is the caller (or person the caller is concerned about) ringing from (i.e. area)?'
     config.columns[:location_trust].form_ui = :select
-    
+
     config.columns[:location_town].label ='Location of client?'
     config.columns[:location_town].form_ui = :auto_complete
 
@@ -121,13 +121,13 @@ class CallController < AuthenticatedApplicationController
 
     config.columns[:caller_satisfaction].label = 'Ask the caller to rate how satisfied s/he was with the service that the LIFELINE provided overall?'
     config.columns[:caller_satisfaction].form_ui = :select
-    
+
     config.columns[:length_of_call].label = 'Length of Call'
     config.columns[:length_of_call].form_ui = :select
-    
+
     config.columns[:call_in_summary].label = 'Summary of Call'
     config.columns[:call_in_summary].form_ui = :textarea
-    config.columns[:call_in_summary].options = { :cols => 60, :rows => 20}
+    config.columns[:call_in_summary].options = { :cols => 50, :rows => 20}
 
 
   # --USER-- #
@@ -163,7 +163,7 @@ class CallController < AuthenticatedApplicationController
                            :limit => 10
                 )
     render :inline => '<%= model_auto_completer_result(@results, :name) %>'
-  end 
+  end
 
 
   # -- TOWN LOCATION -- #
@@ -181,22 +181,22 @@ class CallController < AuthenticatedApplicationController
   # -- PRESENTING ISSUES -- #
 
   def update_subcategory_list
-    render :text => multi_select_collection("sub-categories", 
+    render :text => multi_select_collection("sub-categories",
                                             PresentingIssue.find(:all, :conditions => ["category = ?", params[:categories]]),
-                                            {}, 
+                                            {},
                                             :id,
-                                            :to_label, 
+                                            :to_label,
                                             size=5, "240px")
   end
-  
+
   #def update_toc_subcategory_list
   #  render :text => CY_select_collection("type_of_call", TypeOfCall.find(:all, :conditions => ["category = ?", params[:toc_categories]]), {}, :id, :to_label, 1, '300px')
   #end
 
-  # -- HANGUP --# 
+  # -- HANGUP --#
 
-  def hang_up 
-    hangup_call = Call.new 
+  def hang_up
+    hangup_call = Call.new
     hangup_call.call_in_type = CallInType.find(:first, :conditions => ["type_text = ?", 'Hang Up'])
 
     # Get the user_id from the logged in user (current_user.login)
@@ -210,7 +210,7 @@ class CallController < AuthenticatedApplicationController
 
   # -- SILENCE -- #
 
-  def silence 
+  def silence
     silence_call = Call.new
     silence_call.call_in_type = CallInType.find(:first, :conditions => ["type_text = ?", 'Silent Call'])
 
@@ -225,7 +225,7 @@ class CallController < AuthenticatedApplicationController
 
   # -- TESTING CALL -- #
 
-  def wrong_no 
+  def wrong_no
     wrong_no_call = Call.new
     wrong_no_call.call_in_type = CallInType.find(:first, :conditions => ["type_text = ?", 'Testing Call'])
 
@@ -237,7 +237,7 @@ class CallController < AuthenticatedApplicationController
 
     redirect_to :action => 'new'
   end
-  
+
 
   #def new_client_from_call
   #  new_client_from_call = Call.new
@@ -257,12 +257,12 @@ class CallController < AuthenticatedApplicationController
  #      # Get the user_id from the logged in user (current_user.login)
  #      logged_in_user =  User.find(:first, :conditions => ["login = ?", current_user.login])
 #       hangup_call.user_id = logged_in_user.id
-#  
+#
  #      hangup_call.save
- #      
+ #
  #      redirect_to :action => 'new'
 # end
-          
+
 
 end
 
@@ -301,11 +301,11 @@ module CallHelper
                 { :selected => record.send("#{name}_id"), :prompt => true })
               # { :selected => select_id, :prompt => true })
         end
-                        
-                        
-                       
+
+
+
      end
-                      
+
    end
   # boolean_column(column name, true value, false value). Defines column and form_column methods
   boolean_column :direct_call, "Direct", "Concern for others"
@@ -314,142 +314,20 @@ module CallHelper
   boolean_column :emergency, "Yes - move to immediate risk assess the situation", "No - continue"
   boolean_column :oktoidentify, "Yes", "No - do not identify the service when ringing"
   boolean_column :throughfirstcall, "Yes", "No - (Call waiting/engaged)"
-  
+
   # Generates *_form_column select lists from reference table
   reference_column :referal_source, :name
   reference_column :location_trust, :name
   reference_column :location_postcode, :postcode_text
   reference_column :length_of_call, :duration_text
-  reference_column :type_of_call, :name
+  reference_column :call_in_type, :type_text
+  reference_column :call_in_type_sub, :sub_text
 
   def user_form_column(record, input_name)
     select("call", "user_id", User.find(:all).collect {|u| [u.login, u.id]})
   end
 
 
-  # -- USED LIFELINE BEFORE -- #
-
- #def usedlifelinebefore_form_column(record, input_name)
- #   select_id = @record.usedlifelinebefore
-#
-#    select("record", "usedlifelinebefore",
- #          
- #               [['Yes (Known Caller)', true ], ['No (New Caller)', false]],
-#		{ :selected => select_id, :selected => nil, :prompt => true })
-  #end  
- # def usedlifelinebefore_column(record)
- #     if record.usedlifelinebefore
- #     "Yes (Known Caller)"
- #   else
- #     "No (New Caller)"
- #   end
-    
- # end
-  
- # def usedlifelinebefore_column(record)
-  #  if record.nil?
-  #    "-"
- #     elsif record.usedlifelinebefore
- #     "Yes (Known Caller)"
- #   else
- #     "No (New Caller)"
- #   end
-    
- # end
- 
-
-  # -- DIRECT CALL -- #
-
- # def direct_call_form_column(record, input_name)
- #     select("record", "direct_call", [ ['Direct', true ], ['Concern for others', false]],
- #                                            { :selected => @record.direct_call, :selected => nil, :prompt => true  })
- #     
- # end
- # 
- # def direct_call_column(record)
- #   record.direct_call ? "Direct" : "Concern for others"
-#
- # end
-    
-  # -- EMERGENCY -- #
-
-#  def emergency_form_column(record, input_name)
-#    select("record", "emergency", [['Yes - move to immediate risk assess the situation', true ],
-#                                   ['No - continue',  false ]],
-#                                { :selected => @record.emergency, :selected => nil, :prompt => true  })
-#  end
-
- #   def emergency_column(record)
- #   if record.emergency
- #     "Yes-move to immediate risk assess the situation"
- #   else
- #     "No-continue"
- #   end
-  
-   # def emergency_column(record)
-   # if record.emergency
-   #   "Yes"
-   # else
-   #   "No"
-   # end
- # end
-
-    
-  #end
-
-  # -- OK TO IDENTIFY -- #
-
- # def oktoidentify_form_column(record, input_name)
- #   select("record", "oktoidentify", [['Yes', true ],
- #                                  ['No - do not identify the service when ringing', false]],
- #                               { :selected => @record.oktoidentify, :selected => nil, :prompt => true  })
- # end
- # 
- # def oktoidentify_column(record)
- #   if record.oktoidentify
- #     "Yes"
- #   else
- #     "No-do not identify the service when ringing"
- #   end
- #   
- # end
-
-  # -- THROUGH FRIST CALL -- #
-  
-  #def throughfirstcall_form_column(record, input_name)
-  #  select("record", "throughfirstcall", [ ['Yes', true ], ['No - (Call waiting/engaged)', false]],
-  #                              { :selected => @record.throughfirstcall, :selected => nil, :prompt => true  })
-  #end
- # 
- # def throughfirstcall_column(record)
- #   if record.throughfirstcall
- #     "Yes"
- #   else
- #     "No-(Call waiting/engaged)"
- #   end
- #   
- # end
-  
-  # -- REFERAL SOURCE -- #
-
-#  def referal_source_form_column(record, input_name)
-#    select_id = @record.referal_source
-#    
-#    select("record", "referal_source",
-#                    ReferalSource.find(:all, :order => "id ASC").collect {|r| [r.name, r.id] },
-#	{ :selected => select_id, :prompt => true })
-#  end
-#
-  # -- LOCATION TRUST -- #
-
-#  def location_trust_form_column(record, input_name)
-#      select_id = @record.location_trust
-#
-#      select("record", "location_trust",
-#                        LocationTrust.find(:all, :order => "id ASC").collect {|r| [r.name, r.id] },
-#                        { :selected => select_id, :prompt => true })
-#  end
-#
   # -- LOCATION POSTCODE -- #
 
  def location_postcode_form_column(record, input_name)
@@ -461,7 +339,7 @@ module CallHelper
   end
 
   # -- PRESENTING ISSUES -- #
-  
+
   def presenting_issues_form_column(record, input_name)
 
     innerHTML = String.new
@@ -476,105 +354,32 @@ module CallHelper
                :update => "#{input_name}[sub]",
                :with => 'categories')
     innerHTML << "</div>"
-      
-    # This is empty until a category is clicked, this is then updated 
+
+    # This is empty until a category is clicked, this is then updated
     # via an AJAX update from the controller
     innerHTML << "<div id=\"#{input_name}[sub]\" style=\"width:250px; float:left\">"
     innerHTML << multi_select_collection("sub-categories", {}, {}, :to_s, :to_s, 5, "240px")
     innerHTML << "</div>"
-    
+
     innerHTML << "<div style=\"width:100px; float:left\">"
-    innerHTML << button_to_function("Add >>", 
+    innerHTML << button_to_function("Add >>",
                   "f_optionAdd(0,'sub-categories','presenting_issues')")
 
-    innerHTML << button_to_function("<< Remove", 
+    innerHTML << button_to_function("<< Remove",
                   "f_optionRemove(0,'presenting_issues')")
     innerHTML << "</div>"
 
     innerHTML << "<div id=\"#{input_name}[picked]\" style=\"width:220px%; float:left;\">"
-    innerHTML << multi_select_collection("presenting_issues", 
+    innerHTML << multi_select_collection("presenting_issues",
                                          record.presenting_issues,
-                                         {}, 
+                                         {},
                                          :id, :to_label)
     innerHTML << "</div>"
 
     innerHTML << "</div>"
-    innerHTML 
+    innerHTML
   end
 
-  # -- CALL IN TYPE -- #
-
-  def call_in_type_form_column(record, input_name)
-           select_id = @record.call_in_type
-
-       select("record", "call_in_type",
-          CallInType.find(:all, :order => "id ASC").collect {|r| [r.type_text, r.id] },
-                         {:selected => select_id, :prompt => true })
-  end
-
-
-  # -- CALL IN TYPE SUB -- #
-
-  def call_in_type_sub_form_column(record, input_name)
-       select_id = @record.call_in_type_sub
-        select("record", "call_in_type_sub",
-        CallInTypeSub.find(:all, :order => "id ASC").collect {|r| [r.sub_text, r.id] },
-                        {:selected => select_id, :prompt => true })
-  end
-
-  # -- FURTHER ACTION REQUIRED -- #
-
- # def furtheractionrequired_form_column(record, input_name)
- #   select :record, :furtheractionrequired, 
-#		[['Yes - no further action required', false],
-#	         ['No - action required recorded', true]],
-#		{:selected => @record.furtheractionrequired, :selected => nil, :prompt => true }
-#  end
-  
-
-#
- # def furtheractionrequired_column(record)
- #   if record.furtheractionrequired
- #     "Yes-no further action required"
- #   else
- #     "No-action required recorded"
- #   end
- #   
- # end
-
-  # -- LENGTH OF CALL -- #
-
-# def length_of_call_form_column(record, input_name)
-#        select_id = @record.length_of_call
-#
-#        select("record", "length_of_call",
-#                          LengthOfCall.find(:all, :order => "id ASC").collect {|r| [r.duration_text, r.id] },
-#                      {:selected => select_id, :prompt => true })
-# end
- 
-#  def type_of_call_form_column(record, input_name)
-
-    #innerHTML = String.new
-    #innerHTML << "<div style=\"\">"
-
-    # The main category list, cicking on this populates the sub-category list
-    #innerHTML << "<div style=\"width:230px; float:left\">"
-    #innerHTML << CY_select_collection("toc_categories", TypeOfCall.getCategories, {}, :to_s, :to_s, 1, '230px')
-
-    #innerHTML << observe_field(:toc_categories, :url => { :action => :update_toc_subcategory_list },
-    #           :update => "#{input_name}[sub]",
-    #           :with => 'toc_categories')
-    #innerHTML << "</div>"
-      
-    # This is empty until a category is clicked, this is then updated 
-    # via an AJAX update from the controller
-    #innerHTML << "<div id=\"#{input_name}[sub]\" style=\"width:300px; float:left\">"
-    #innerHTML << CY_select_collection("type_of_call", record.type_of_call, record.type_of_call, :id, :to_label, 1, '300px')
-    #innerHTML << "</div>"
-    
-    #innerHTML << "</div>"
-    #innerHTML 
- # end
 
   # Override the form_ui so that we can prepopulate this field
   def client_form_column(record, input_name)
@@ -590,7 +395,7 @@ module CallHelper
     # and generate the html ourselves...
     belongs_to_auto_completer :record, :client, :id, options
   end
-  
+
   # Override the form_ui so that we can prepopulate this field
   def location_town_form_column(record, input_name)
     if !self.params_for['location_town_id'].nil?
