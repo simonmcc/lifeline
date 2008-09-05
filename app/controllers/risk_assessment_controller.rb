@@ -56,10 +56,10 @@ class RiskAssessmentController < AuthenticatedApplicationController
   def auto_complete_belongs_to_for_record_client_id
     auto_param = params[:record][:client][:text]
     @results = Client.find(:all,
-                           :conditions => ["LOWER(fname) LIKE ?", "%#{auto_param.downcase}%"],
+                           :conditions => ["LOWER(name) LIKE ?", "%#{auto_param.downcase}%"],
                            :limit => 10
                 )
-    render :inline => '<%= model_auto_completer_result(@results, :fname) %>'
+    render :inline => '<%= model_auto_completer_result(@results, :name) %>'
   end 
 end
 
