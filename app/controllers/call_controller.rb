@@ -290,7 +290,8 @@ module CallHelper
      end
 
    define_method("#{name}_form_column") do |record, input_name|
-     select :record, name, [[display_true, true], [display_false, false]], {:selected => @record.send(name), :selected => nil, :prompt => true }
+     select :record, name, [[display_true, true], [display_false, false]], {:selected => @record.send(name), :prompt => true }
+     #select :record, name, [[display_true, true], [display_false, false]], {:selected => @record.send(name), :selected => nil, :prompt => true }
    end
 
   end

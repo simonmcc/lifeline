@@ -69,6 +69,8 @@ class ClientController < AuthenticatedApplicationController
     config.update.link.page = true
     
     config.columns[:id].label = "Lifeline ID"
+    
+    config.columns[:project_id].label = "Project ID"
 
     config.columns[:name].label = "Name"
 
